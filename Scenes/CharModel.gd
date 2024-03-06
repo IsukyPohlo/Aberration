@@ -1,10 +1,15 @@
 extends Node3D
 
+
+
 @onready var animTree = $AnimationTree as AnimationTree
 @onready var walkDir: Vector2
 @onready var moveState: String = "walk"
 @onready var walkState = animTree.get("parameters/WalkStateMachine/playback") as AnimationNodeStateMachinePlayback
 @onready var upperState = animTree.get("parameters/UpperStateMachine/playback") as AnimationNodeStateMachinePlayback
+
+func _process(delta: float) -> void:
+	pass
 
 func setWalk(blend: Vector2) -> void:
 	

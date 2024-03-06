@@ -142,7 +142,7 @@ func pickObject()-> void:
 	if collider is StaticBody3D:
 		if (collider as StaticBody3D).is_in_group("mirror"):
 			print("Mirror interaction")
-			dialogueBox.startDialogue("mirror")
+			#dialogueBox.startDialogue("mirror")
 			
 	if collider is AnimatableBody3D:
 		if (collider as AnimatableBody3D).is_in_group("interact"):
