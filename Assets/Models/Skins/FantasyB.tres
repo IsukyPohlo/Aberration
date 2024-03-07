@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://cm61rk4dqnomp"]
+
+[ext_resource type="Texture2D" uid="uid://bg7g1e80n70ov" path="res://Assets/Models/Skins/fantasyMaleB.png" id="1_7wdlc"]
+
+[resource]
+diffuse_mode = 3
+specular_mode = 1
+albedo_texture = ExtResource("1_7wdlc")

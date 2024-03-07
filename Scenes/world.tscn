@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://bqiq2xsct14id"]
+[gd_scene load_steps=40 format=3 uid="uid://bqiq2xsct14id"]
 
 [ext_resource type="Shader" path="res://Assets/retroPost.gdshader" id="1_3m5o6"]
 [ext_resource type="PackedScene" uid="uid://b0m8r8l2758ta" path="res://Scenes/Char.tscn" id="1_gjqyh"]
@@ -13,6 +13,10 @@
 [ext_resource type="PackedScene" uid="uid://bbm0pljegynur" path="res://Assets/Models/Furniture/kitchenCabinetDrawer.glb" id="6_pasps"]
 [ext_resource type="PackedScene" uid="uid://bvy2uc30bmq3r" path="res://Assets/Models/Furniture/trashcan.glb" id="8_dapp6"]
 [ext_resource type="PackedScene" uid="uid://dwwexe84rgp36" path="res://Scenes/char_model.tscn" id="13_6afqb"]
+[ext_resource type="Script" path="res://Scenes/DialogueBox.gd" id="14_hpm6y"]
+[ext_resource type="Script" path="res://addons/ez_dialogue/ez_dialogue_node.gd" id="15_rh4gp"]
+[ext_resource type="JSON" path="res://Dialogue/intro.json" id="15_xmmko"]
+[ext_resource type="Texture2D" uid="uid://cnc0361tgcjkk" path="res://icon.svg" id="17_5gdnl"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_hd5ni"]
 sky_top_color = Color(1, 1, 1, 1)
@@ -210,15 +214,6 @@ shadow_mesh = SubResource("ArrayMesh_rs2f3")
 [sub_resource type="BoxShape3D" id="BoxShape3D_aqinr"]
 size = Vector3(2, 3, 0.1)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_oknit"]
-shader = ExtResource("1_3m5o6")
-shader_parameter/change_color_depth = true
-shader_parameter/target_color_depth = 5
-shader_parameter/dithering = true
-shader_parameter/scale_resolution = true
-shader_parameter/target_resolution_scale = 4
-shader_parameter/enable_recolor = false
-
 [sub_resource type="SphereMesh" id="SphereMesh_8uh8h"]
 radius = 2.5
 height = 5.0
@@ -228,13 +223,22 @@ shading_mode = 0
 disable_fog = true
 albedo_color = Color(0, 0.94902, 1, 1)
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_oknit"]
+shader = ExtResource("1_3m5o6")
+shader_parameter/change_color_depth = true
+shader_parameter/target_color_depth = 5
+shader_parameter/dithering = true
+shader_parameter/scale_resolution = true
+shader_parameter/target_resolution_scale = 4
+shader_parameter/enable_recolor = false
+
 [node name="World" type="Node3D"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_8xbgx")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(-0.235389, 0.370365, 0.898567, 0.865279, 0.500882, 0.0202188, -0.442587, 0.782271, -0.438371, 3.20611, 2.07768, 0.764983)
+transform = Transform3D(-0.818768, -0.153168, 0.553315, 0.365698, 0.603815, 0.708289, -0.442587, 0.782271, -0.438371, 3.20611, 2.07768, 0.764983)
 light_color = Color(1, 0.188235, 0.258824, 1)
 light_volumetric_fog_energy = 16.0
 shadow_enabled = true
@@ -250,6 +254,7 @@ shadow_enabled = true
 [node name="Char" parent="." instance=ExtResource("1_gjqyh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 27.3057, 20.3418, 16.8685)
 floor_max_angle = 0.872665
+SENSITIVITY = 0.001
 
 [node name="Map" type="Node3D" parent="."]
 
@@ -293,7 +298,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_dl8md")
 [node name="toilet" parent="Room" instance=ExtResource("3_gnc3m")]
 
 [node name="paneling" parent="Room" instance=ExtResource("5_fq3lw")]
-transform = Transform3D(-5.24537e-08, 0, 1.2, 0, 1.2, 0, -1.2, 0, -5.24537e-08, -0.66074, 0.638666, 4.27112)
+transform = Transform3D(-5.24537e-08, 0, 4.2, 0, 1, 0, -1.2, 0, -1.83588e-07, -0.88855, 0.696085, 4.27112)
 
 [node name="paneling2" parent="Room" instance=ExtResource("5_fq3lw")]
 transform = Transform3D(-5.24537e-08, 0, 1.2, 0, 1.2, 0, -1.2, 0, -5.24537e-08, -0.66074, 0.638666, 1.42402)
@@ -317,7 +322,7 @@ visible = false
 light_color = Color(1, 0, 0.0156863, 1)
 
 [node name="Mirror" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0.000698089, 0, 1, 0, -0.000698089, 0, 1, 27.2438, 21.4954, 16.3851)
+transform = Transform3D(1, 0, 0.000698089, 0, 1, 0, -0.000698089, 0, 1, 27.2438, 21.4954, 16.4671)
 script = ExtResource("1_lb3ky")
 ResolutionPerUnit = 1000
 MainCamPath = NodePath("../Char/Head/Camera3D")
@@ -352,7 +357,17 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.91768, 0.5, -0.471064)
 [node name="trashcan" parent="." instance=ExtResource("8_dapp6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.5761, 0.499998, -1.2735)
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="CharModel" parent="." instance=ExtResource("13_6afqb")]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 4.37078, 0.5, 1.9126)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -223.784, 9.95707, 178.751)
+mesh = SubResource("SphereMesh_8uh8h")
+surface_material_override/0 = SubResource("StandardMaterial3D_xuxdd")
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="UI"]
 material = SubResource("ShaderMaterial_oknit")
 anchors_preset = 15
 anchor_right = 1.0
@@ -361,10 +376,76 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="CharModel" parent="." instance=ExtResource("13_6afqb")]
-transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 4.37078, 0.5, 1.9126)
+[node name="DialogueBox" type="VBoxContainer" parent="UI"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -33.5
+offset_top = -83.515
+offset_right = 33.5
+offset_bottom = -43.515
+grow_horizontal = 2
+grow_vertical = 0
+alignment = 2
+script = ExtResource("14_hpm6y")
+dialogue = ExtResource("15_xmmko")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -223.784, 9.95707, 178.751)
-mesh = SubResource("SphereMesh_8uh8h")
-surface_material_override/0 = SubResource("StandardMaterial3D_xuxdd")
+[node name="text" type="Label" parent="UI/DialogueBox"]
+layout_mode = 2
+text = "TextText"
+
+[node name="EzDialogue" type="Node" parent="UI/DialogueBox"]
+script = ExtResource("15_rh4gp")
+
+[node name="LineEdit" type="LineEdit" parent="UI"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -126.5
+offset_top = -15.5
+offset_right = 126.5
+offset_bottom = 15.5
+grow_horizontal = 2
+grow_vertical = 2
+placeholder_text = "Your name"
+alignment = 1
+
+[node name="Portrait" type="Sprite2D" parent="UI"]
+position = Vector2(137, 537)
+texture = ExtResource("17_5gdnl")
+
+[node name="left" type="Button" parent="UI"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -47.695
+offset_top = 142.825
+offset_right = 0.304993
+offset_bottom = 197.825
+grow_horizontal = 2
+grow_vertical = 2
+text = "<"
+
+[node name="right" type="Button" parent="UI"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 6.44501
+offset_top = 142.85
+offset_right = 54.445
+offset_bottom = 197.85
+grow_horizontal = 2
+grow_vertical = 2
+text = ">"
+
+[connection signal="custom_signal_received" from="UI/DialogueBox/EzDialogue" to="UI/DialogueBox" method="_on_ez_dialogue_custom_signal_received"]
+[connection signal="dialogue_generated" from="UI/DialogueBox/EzDialogue" to="UI/DialogueBox" method="_on_ez_dialogue_dialogue_generated"]
+[connection signal="text_changed" from="UI/LineEdit" to="UI/DialogueBox" method="_on_line_edit_text_changed"]

@@ -250,6 +250,7 @@ size = Vector3(1.6, 1.2, 0.5)
 
 [node name="floor_kitchen" type="MeshInstance3D" parent="."]
 visible = false
+lod_bias = 10.0
 mesh = SubResource("ArrayMesh_agvet")
 skeleton = NodePath("")
 
@@ -271,6 +272,7 @@ shape = SubResource("ConvexPolygonShape3D_oovr4")
 
 [node name="Primitive_Wall_Short" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.5, 0, 0, 0)
+visible = false
 mesh = SubResource("ArrayMesh_ltd67")
 skeleton = NodePath("")
 
@@ -294,6 +296,7 @@ shape = SubResource("BoxShape3D_dan17")
 [node name="wall_doorway" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 visible = false
+lod_bias = 20.0
 mesh = SubResource("ArrayMesh_de6ug")
 skeleton = NodePath("")
 
@@ -312,8 +315,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00359523, 3.3999, -0.000633
 shape = SubResource("BoxShape3D_t61me")
 
 [node name="wall_window_open" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00649738, 0.5, 0)
-visible = false
+transform = Transform3D(1.02, 0, 0, 0, 1.02, 0, 0, 0, 1.02, 0, 0.5, 0)
+ignore_occlusion_culling = true
 mesh = SubResource("ArrayMesh_n2rwo")
 skeleton = NodePath("")
 

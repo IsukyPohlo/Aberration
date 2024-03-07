@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cesdxqyluem6q"
-path.s3tc="res://.godot/imported/casualMaleB.png-ec9c5a326fb201d0fc4fce39fdfd5b69.s3tc.ctex"
+uid="uid://bg7g1e80n70ov"
+path.s3tc="res://.godot/imported/fantasyMaleB.png-7c571cf40bdce7f028da63a7d4a6bba9.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://Assets/Models/casualMaleB.png"
-dest_files=["res://.godot/imported/casualMaleB.png-ec9c5a326fb201d0fc4fce39fdfd5b69.s3tc.ctex"]
+source_file="res://Assets/Models/Skins/fantasyMaleB.png"
+dest_files=["res://.godot/imported/fantasyMaleB.png-7c571cf40bdce7f028da63a7d4a6bba9.s3tc.ctex"]
 
 [params]
 

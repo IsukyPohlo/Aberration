@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://djqg6sqkov3eq"
-path.s3tc="res://.godot/imported/casualMaleA.png-dda86330df97c21648e122b00e11b31e.s3tc.ctex"
+path.s3tc="res://.godot/imported/casualMaleA.png-73cafbfdad5522fb62eb0e271b2dd105.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://Assets/Models/casualMaleA.png"
-dest_files=["res://.godot/imported/casualMaleA.png-dda86330df97c21648e122b00e11b31e.s3tc.ctex"]
+source_file="res://Assets/Models/Skins/casualMaleA.png"
+dest_files=["res://.godot/imported/casualMaleA.png-73cafbfdad5522fb62eb0e271b2dd105.s3tc.ctex"]
 
 [params]
 

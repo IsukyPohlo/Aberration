@@ -1,15 +1,24 @@
 extends Node3D
 
-
-
 @onready var animTree = $AnimationTree as AnimationTree
 @onready var walkDir: Vector2
 @onready var moveState: String = "walk"
 @onready var walkState = animTree.get("parameters/WalkStateMachine/playback") as AnimationNodeStateMachinePlayback
 @onready var upperState = animTree.get("parameters/UpperStateMachine/playback") as AnimationNodeStateMachinePlayback
 
+@onready var character_large_male: MeshInstance3D = $RootNode/Root/Skeleton3D/characterLargeMale
+@export var skins: Array[BaseMaterial3D]
+var skinIdx = 0
+
 func _process(delta: float) -> void:
 	pass
+
+func changeSkin() -> void:
+	skinIdx = skinIdx + 1
+	setSkin(skinIdx)
+	
+func setSkin(idx: int) -> void:
+	character_large_male.set_surface_override_material(0,skins[idx])
 
 func setWalk(blend: Vector2) -> void:
 	
