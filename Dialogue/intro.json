@@ -1,1 +1,112 @@
-[{"commands_raw":"signal(portrait,none)\nsignal(line,hide)\nsignal(skinSelect,hide)\nplease use keyboard and mouse\n---\n-> char create\n","gnode_name":"intro","id":0,"name":"intro","position":[100,400]},{"commands_raw":"signal(portrait,narrator)\nsignal(line,show)\nPlease, enter your name.\n?> Done{\n    $if name == \"\" {\n        Plase enter a valid name :)\n        -> char create\n    }\n    $else {\n        Hi ${name}\n        signal(line,hide)\n        -> skin select\n    }\n}\n","gnode_name":"char create","id":1,"name":"char create","position":[240,400]},{"commands_raw":"signal(skinSelect,show)\nplease select your skin\n?> Done -> char confirmation","gnode_name":"skin select","id":2,"name":"skin select","position":[400,400]},{"commands_raw":"Is this really you?\n?> Yes {\n    Take a good look at you, ${name}\n    ---\n    Becausde you are no longer are ${name}\n    ---\n    You name is too excentric around here.\n    ---\n    You are 209384 now.\n    ---\n    And you look like this now.\n    ---\n}\n\n?> No {\n    -> char create\n}","gnode_name":"char confirmation","id":3,"name":"char confirmation","position":[560,400]}]
+[
+	{
+		"commands_raw": "signal(portrait,none)\nsignal(line,hide)\nsignal(skinSelect,hide)\nplease use keyboard and mouse\n---\n-> char create\n",
+		"gnode_name": "intro",
+		"id": 0,
+		"name": "intro",
+		"position": [
+			20,
+			180
+		]
+	},
+	{
+		"commands_raw": "signal(portrait,narrator)\nsignal(line,show)\nPlease, enter your name.\n?> Done{\n    $if name == \"\" {\n        Plase enter a valid name :)\n        -> char create\n    }\n    $else {\n        Hi ${name}\n        signal(line,hide)\n        -> skin select\n    }\n}\n",
+		"gnode_name": "char create",
+		"id": 1,
+		"name": "char create",
+		"position": [
+			160,
+			180
+		]
+	},
+	{
+		"commands_raw": "signal(skinSelect,show)\nplease select your skin\n?> Done {\n    signal(skinSelect,hide)\n     -> char confirmation\n}",
+		"gnode_name": "skin select",
+		"id": 2,
+		"name": "skin select",
+		"position": [
+			320,
+			180
+		]
+	},
+	{
+		"commands_raw": "Is this really you?\n?> Yes {\n    Take a good look at you, ${name}.\n    ---\n    Becausde you are no longer are ${name}\n    ---\n    You are ${randomNumber} now.\n    signal(skinSet,0)\n    signal(progress,set,0,true)\n    ---\n    Go and work now.\n}\n\n?> No {\n    -> char create\n}",
+		"gnode_name": "char confirmation",
+		"id": 3,
+		"name": "char confirmation",
+		"position": [
+			440,
+			300
+		]
+	},
+	{
+		"commands_raw": "Type text to work.\n1 character = 1 credit.\nsignal(work,show)\n?> Finish{\nsignal(work,save)\nsignal(work,hide)\nCheck what you can unlock with your new credits.\n}\n",
+		"gnode_name": "work",
+		"id": 4,
+		"name": "work",
+		"position": [
+			40,
+			320
+		]
+	},
+	{
+		"commands_raw": "*It is a letter.*\n?> Read it{\nMake sure you don't go numb.\nPlay games, look through the window, do something else than work to \nimprove your mental state. :)\nDON'T REACH 100% NUMB.\n---\n*Right beside the note there is a videogame called: Aberrant.*\n---\n*You take it*\nsignal(game,show)\n}\n",
+		"gnode_name": "tablet",
+		"id": 5,
+		"name": "tablet",
+		"position": [
+			40,
+			400
+		]
+	},
+	{
+		"commands_raw": "Watching the pink colored sky makes you feel better. \n---\nLike there is something out there waiting for you to discover it.\n---\nLike the worlds is bigger than your room.\n---\nBut it isn't.",
+		"gnode_name": "window1",
+		"id": 6,
+		"name": "Window1",
+		"position": [
+			40,
+			540
+		]
+	},
+	{
+		"commands_raw": "You try to remember what you wanted to be as an adult.\n---\nGames?\n---\nGame dev?\n---\nNah. In this country there is no job for game dev.\n---\nLet's try software development and later try game dev.\n---\nWe still have a life in front of us, there will be time.\n---\nSurely, there will be time...",
+		"gnode_name": "window2",
+		"id": 7,
+		"name": "Window2",
+		"position": [
+			40,
+			600
+		]
+	},
+	{
+		"commands_raw": "What was the last time you went outside?\n---\nThat's right. You have been for years. \n---\nBut the door has been always open.\n---\nWhy not leave?\n---\nLeave all of this behind.\n---\nNah. This is fine.\n--- \nJust need to work and buy everything I need.\nNo use to go outside.",
+		"gnode_name": "window3",
+		"id": 8,
+		"name": "Window3",
+		"position": [
+			40,
+			660
+		]
+	},
+	{
+		"commands_raw": "This is a nice view.\n---\nWhat else do you want? Working from home\n---\nYou can have a quick peek outside when your eyes feel tired.\n---\nAnd it makes your spacework feel cozy.",
+		"gnode_name": "window4",
+		"id": 9,
+		"name": "Window4",
+		"position": [
+			40,
+			720
+		]
+	},
+	{
+		"commands_raw": "eyes.",
+		"gnode_name": "window5",
+		"id": 10,
+		"name": "Window5",
+		"position": [
+			40,
+			780
+		]
+	}
+]

@@ -6,6 +6,7 @@ extends Node3D
 @onready var walkState = animTree.get("parameters/WalkStateMachine/playback") as AnimationNodeStateMachinePlayback
 @onready var upperState = animTree.get("parameters/UpperStateMachine/playback") as AnimationNodeStateMachinePlayback
 
+@onready var numbhole: MeshInstance3D = $RootNode/Root/Skeleton3D/BoneAttachment3D/Numbhole
 @onready var character_large_male: MeshInstance3D = $RootNode/Root/Skeleton3D/characterLargeMale
 @export var skins: Array[BaseMaterial3D]
 var skinIdx = 0
@@ -13,9 +14,22 @@ var skinIdx = 0
 func _process(delta: float) -> void:
 	pass
 
-func changeSkin() -> void:
-	skinIdx = skinIdx + 1
+func changeSkin(increment: bool) -> int:
+
+	if increment:
+		if skinIdx < len(skins)-1:
+			skinIdx = skinIdx + 1
+		else:
+			skinIdx = 1
+		
+	else:
+		if skinIdx > 1:
+			skinIdx = skinIdx - 1
+		else:
+			skinIdx = len(skins) - 1
+	
 	setSkin(skinIdx)
+	return skinIdx
 	
 func setSkin(idx: int) -> void:
 	character_large_male.set_surface_override_material(0,skins[idx])
@@ -55,3 +69,6 @@ func setState(newState: String) -> void:
 func setUpperAnim(anim: String) -> void:
 	print("Setting Animation: ", anim)
 	upperState.travel(anim)
+	
+func enableHole(visible: bool) -> void:
+	numbhole.visible = visible

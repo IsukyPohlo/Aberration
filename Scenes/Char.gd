@@ -40,6 +40,9 @@ func _unhandled_input(event):
 		camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-60), deg_to_rad(60))
 
 func _process(delta: float) -> void:
+	
+	
+	
 	if Input.is_action_just_pressed("ui_cancel"):
 		# check if outside of dialogue
 		if dialogueBox.dialogue_finished == true:
@@ -49,15 +52,16 @@ func _process(delta: float) -> void:
 				Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	if Input.is_action_just_pressed("crouch"):
 		print("crouching")
-		charModel.setCrouch(true)
-		head.position.y = 1.6
+		charModel.setState("crouch")
+		head.position.y = 1.4
 		print(camera.position)
 	if Input.is_action_just_released("crouch"):
 		print("walking")
-		charModel.setCrouch(false)
-		head.position.y = 1.8
+		charModel.setState("walk")
+		head.position.y = 1.6
 		print(camera.position)
-
+	changeInteractIcon()
+	
 func _physics_process(delta):
 	
 	# Very based on: https://github.com/LegionGames/FirstPersonController
@@ -142,20 +146,116 @@ func pickObject()-> void:
 			charModel.setUpperAnim("Interact")
 
 	if collider is StaticBody3D:
-		if (collider as StaticBody3D).is_in_group("mirror"):
-			print("Mirror interaction")
-			#dialogueBox.startDialogue("mirror")
+		if (collider as StaticBody3D).is_in_group("work"):
+			dialogueBox.startDialogue("work")
+			
+		if (collider as StaticBody3D).is_in_group("dialogue"):
+			dialogueBox.startDialogue(collider.name)
+			match (collider.name):
+				"Window1":
+					collider.remove_from_group("dialogue")
+					if dialogueBox.state["numbness"] > 60:
+						dialogueBox.state["numbness"] -= 60
+					else:
+						dialogueBox.state["numbness"] = 0
+				"Window2":
+					collider.remove_from_group("dialogue")
+					if dialogueBox.state["numbness"] > 60:
+						dialogueBox.state["numbness"] -= 60
+					else:
+						dialogueBox.state["numbness"] = 0
+				"Window3":
+					collider.remove_from_group("dialogue")
+					if dialogueBox.state["numbness"] > 60:
+						dialogueBox.state["numbness"] -= 60
+					else:
+						dialogueBox.state["numbness"] = 0
+					
+		if (collider as StaticBody3D).is_in_group("unlockable"):
+			dialogueBox.changeText("")
+			match (collider.name):
+				"Window1":
+					#if state["numbness"] > 100:
+					collider.visible = false
+					collider.remove_from_group("unlockable")
+					collider.add_to_group("dialogue")
+						
+				"Window2":
+					collider.visible = false
+					collider.remove_from_group("unlockable")
+					collider.add_to_group("dialogue")
+				"Window3":
+					collider.visible = false
+					collider.remove_from_group("unlockable")
+					collider.add_to_group("dialogue")
+				"Window4":
+					collider.visible = false
+					collider.remove_from_group("unlockable")
+					collider.add_to_group("dialogue")
+				"Window5":
+					collider.visible = false
+					collider.remove_from_group("unlockable")
+					collider.add_to_group("dialogue")
+				#"toilet":
+					#dialogueBox.changeText("50 Credits to buy a toilet")
+				"chair":
+					collider.find_child("chairDesk").visible = true
+					collider.find_child("chairDesk(Clone)").visible = false
+					collider.remove_from_group("unlockable")
 			
 	if collider is AnimatableBody3D:
 		if (collider as AnimatableBody3D).is_in_group("interact"):
-			collider.get_parent_node_3d().Interact()
-			
-			if collider.get_parent_node_3d().hasDialogue:
-				dialogueBox.startDialogue(collider.get_parent_node_3d().name)
+			collider.Interact()
+			if collider.hasDialogue:
+				dialogueBox.startDialogue(collider.name)
 
 func removeObject():
 	if pickedObject != null:
 		pickedObject = null
 		charModel.setUpperAnim("Idle")
 		
+func rotateCharSkin(increment: bool) -> int:
+	return charModel.changeSkin(increment)
+	
+func setCharSkin(idx: int) -> void:
+	charModel.setSkin(idx)
+	
+func setCharHole(visible: bool) -> void:
+	charModel.enableHole(visible)
 
+func changeInteractIcon() -> void:
+	var collider = interaction.get_collider()
+
+	if collider is StaticBody3D:
+		if (collider as StaticBody3D).is_in_group("unlockable"):
+			dialogueBox.changeIcon(3)
+			match (collider.name):
+				"Window1":
+					dialogueBox.changeText("100 Credits to open window")
+				"Window2":
+					dialogueBox.changeText("100 Credits to open window")
+				"Window3":
+					dialogueBox.changeText("100 Credits to open window")
+				"Window4":
+					dialogueBox.changeText("100 Credits to open window (x2 credits while working)")
+				"Window5":
+					dialogueBox.changeText("100 Credits to open window")
+				"toilet":
+					dialogueBox.changeText("50 Credits to buy a toilet")
+				"chair":
+					dialogueBox.changeText("200 Credits ( halve numbness while working)")
+		elif (collider as StaticBody3D).is_in_group("work"):
+			dialogueBox.changeIcon(2)
+			dialogueBox.changeText("WORK")
+		elif (collider as StaticBody3D).is_in_group("interact"):
+			dialogueBox.changeIcon(1)
+		elif (collider as StaticBody3D).is_in_group("dialogue"):
+			dialogueBox.changeIcon(4)
+		elif (collider as StaticBody3D).is_in_group("game"):
+			dialogueBox.changeIcon(5)
+			dialogueBox.changeText("Play 'Aberrant'")
+		else:
+			dialogueBox.changeIcon(0)
+	else:
+		dialogueBox.changeIcon(0)
+		dialogueBox.changeText("")
