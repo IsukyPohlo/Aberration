@@ -11,6 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://dapkqoakd56v7" path="res://Assets/Models/Furniture/lampSquareCeiling.glb" id="5_dq752"]
 [ext_resource type="Material" uid="uid://3gaewcafd4nh" path="res://Assets/MissingFurniture.tres" id="5_o7gnt"]
 [ext_resource type="PackedScene" uid="uid://bbm0pljegynur" path="res://Assets/Models/Furniture/kitchenCabinetDrawer.glb" id="6_pasps"]
+[ext_resource type="Texture2D" uid="uid://cuhj40lo7tnep" path="res://Assets/Sprites/Aberration.png" id="7_l3ogp"]
 [ext_resource type="PackedScene" uid="uid://bvy2uc30bmq3r" path="res://Assets/Models/Furniture/trashcan.glb" id="8_dapp6"]
 [ext_resource type="PackedScene" uid="uid://dwwexe84rgp36" path="res://Scenes/char_model.tscn" id="13_6afqb"]
 [ext_resource type="Script" path="res://Scenes/DialogueBox.gd" id="14_hpm6y"]
@@ -23,8 +24,7 @@
 [ext_resource type="Texture2D" uid="uid://c3yoi8apuc6bj" path="res://Assets/UI/retro-controller.svg" id="19_nxftx"]
 [ext_resource type="Texture2D" uid="uid://0ktjqhmma2lm" path="res://Assets/UI/chat-bubble.svg" id="20_2sulf"]
 [ext_resource type="Texture2D" uid="uid://me3cpf8qevxx" path="res://Assets/UI/token.svg" id="22_qqrwo"]
-[ext_resource type="Shader" path="res://Assets/chromatix2.gdshader" id="24_v4bmb"]
-[ext_resource type="Texture2D" uid="uid://dor50mhkpomer" path="res://Assets/Untitled-1.png" id="25_w5g41"]
+[ext_resource type="Shader" path="res://Assets/chromatic.gdshader" id="25_kxoyy"]
 [ext_resource type="Shader" path="res://Assets/chromatic3.gdshader" id="26_yrwf0"]
 [ext_resource type="Shader" path="res://Assets/vignette.gdshader" id="27_f0g2s"]
 
@@ -826,9 +826,13 @@ bg_color = Color(0.6, 0.235294, 0.52549, 1)
 viewport_path = NodePath("UI/LaptopScreen2")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_gnbfb"]
-shader = ExtResource("24_v4bmb")
-shader_parameter/strength = 0.0
-shader_parameter/offset_image = ExtResource("25_w5g41")
+shader = ExtResource("25_kxoyy")
+shader_parameter/alpha = 1.0
+shader_parameter/scale = 1.0
+shader_parameter/red_shift = 0.0
+shader_parameter/blue_shift = -5.0
+shader_parameter/green_shift = 5.0
+shader_parameter/red_mult = 1.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_634gl"]
 shader = ExtResource("26_yrwf0")
@@ -861,7 +865,7 @@ light_volumetric_fog_energy = 16.0
 shadow_enabled = true
 
 [node name="Char" parent="." instance=ExtResource("1_gjqyh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 27.3057, 20.3418, 16.8685)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.084, 20.3418, 16.8685)
 floor_max_angle = 0.872665
 SENSITIVITY = 0.001
 
@@ -1157,6 +1161,38 @@ shape = SubResource("BoxShape3D_cinxt")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Room/game"]
 mesh = SubResource("BoxMesh_2b8km")
+
+[node name="aberrant" type="Sprite3D" parent="Room"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.54768, 0.846491, -0.786478)
+visible = false
+pixel_size = 0.002
+billboard = 2
+texture_filter = 2
+texture = ExtResource("7_l3ogp")
+
+[node name="aberrant2" type="Sprite3D" parent="Room"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.64945, 1.26195, -0.786478)
+visible = false
+pixel_size = 0.002
+billboard = 2
+texture_filter = 2
+texture = ExtResource("7_l3ogp")
+
+[node name="aberrant3" type="Sprite3D" parent="Room"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.917553, 1.26195, 0.915487)
+visible = false
+pixel_size = 0.002
+billboard = 2
+texture_filter = 2
+texture = ExtResource("7_l3ogp")
+
+[node name="aberrant4" type="Sprite3D" parent="Room"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.917553, 1.26195, 3.63762)
+visible = false
+pixel_size = 0.002
+billboard = 2
+texture_filter = 2
+texture = ExtResource("7_l3ogp")
 
 [node name="Mirror" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0.000698089, 0, 1, 0, -0.000698089, 0, 1, 27.2438, 21.4954, 16.4671)
@@ -1511,9 +1547,19 @@ horizontal_alignment = 1
 autowrap_mode = 2
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
-visible = false
 
-[node name="Aberration" type="ColorRect" parent="CanvasLayer"]
+[node name="AberrationVision" type="ColorRect" parent="CanvasLayer"]
+visible = false
+top_level = true
+material = SubResource("ShaderMaterial_gnbfb")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="AberrationEyes" type="ColorRect" parent="CanvasLayer"]
 visible = false
 top_level = true
 material = SubResource("ShaderMaterial_gnbfb")
@@ -1535,6 +1581,7 @@ grow_vertical = 2
 mouse_filter = 2
 
 [node name="Numbness" type="ColorRect" parent="CanvasLayer"]
+visible = false
 material = SubResource("ShaderMaterial_jfx5g")
 anchors_preset = 15
 anchor_right = 1.0

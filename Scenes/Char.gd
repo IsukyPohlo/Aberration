@@ -18,12 +18,16 @@ var t_bob = 0.0
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = 9.8
 
+var bullet = preload("res://Scenes/bullet.tscn")
+
 @onready var head = $Head
 @onready var camera = $Head/Camera3D as Camera3D
 @onready var interaction = $Head/Camera3D/Interaction
 @onready var hand = $Head/Camera3D/Hand
 @onready var charModel = $CharModel
 @onready var dialogueBox = $"../UI/DialogueBox"
+@onready var blasterAnim: AnimationPlayer = $Head/Camera3D/BlasterAnimPlayer
+@onready var blasterBarrel: RayCast3D = $Head/Camera3D/RayCast3D
 
 var pickedObject: RigidBody3D
 var pullPower: float = 5.0
@@ -41,7 +45,7 @@ func _unhandled_input(event):
 
 func _process(delta: float) -> void:
 	
-	
+	changeInteractIcon()
 	
 	if Input.is_action_just_pressed("ui_cancel"):
 		# check if outside of dialogue
@@ -60,7 +64,15 @@ func _process(delta: float) -> void:
 		charModel.setState("walk")
 		head.position.y = 1.6
 		print(camera.position)
-	changeInteractIcon()
+		
+	if Input.is_action_pressed("shoot"):
+		if !blasterAnim.is_playing():
+			blasterAnim.play("shoot")
+			blasterAnim.speed_scale = 2
+			var instance = bullet.instantiate()
+			instance.position = blasterBarrel.global_position
+			instance.transform.basis = blasterBarrel.global_transform.basis
+			get_parent().add_child(instance)
 	
 func _physics_process(delta):
 	
@@ -249,8 +261,10 @@ func changeInteractIcon() -> void:
 			dialogueBox.changeText("WORK")
 		elif (collider as StaticBody3D).is_in_group("interact"):
 			dialogueBox.changeIcon(1)
+			dialogueBox.changeText("")
 		elif (collider as StaticBody3D).is_in_group("dialogue"):
 			dialogueBox.changeIcon(4)
+			dialogueBox.changeText("")
 		elif (collider as StaticBody3D).is_in_group("game"):
 			dialogueBox.changeIcon(5)
 			dialogueBox.changeText("Play 'Aberrant'")
