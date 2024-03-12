@@ -164,6 +164,8 @@ func pickObject()-> void:
 		if (collider as StaticBody3D).is_in_group("dialogue"):
 			dialogueBox.startDialogue(collider.name)
 			match (collider.name):
+				"Mirror":
+					dialogueBox.changeText("")
 				"Window1":
 					collider.remove_from_group("dialogue")
 					if dialogueBox.state["numbness"] > 60:
@@ -182,7 +184,7 @@ func pickObject()-> void:
 						dialogueBox.state["numbness"] -= 60
 					else:
 						dialogueBox.state["numbness"] = 0
-					
+
 		if (collider as StaticBody3D).is_in_group("unlockable"):
 			dialogueBox.changeText("")
 			match (collider.name):
@@ -256,6 +258,7 @@ func changeInteractIcon() -> void:
 					dialogueBox.changeText("50 Credits to buy a toilet")
 				"chair":
 					dialogueBox.changeText("200 Credits ( halve numbness while working)")
+					
 		elif (collider as StaticBody3D).is_in_group("work"):
 			dialogueBox.changeIcon(2)
 			dialogueBox.changeText("WORK")
@@ -264,7 +267,11 @@ func changeInteractIcon() -> void:
 			dialogueBox.changeText("")
 		elif (collider as StaticBody3D).is_in_group("dialogue"):
 			dialogueBox.changeIcon(4)
-			dialogueBox.changeText("")
+			match (collider.name):
+				"Mirror":
+					dialogueBox.changeText("Check your status")
+				_: 
+					dialogueBox.changeText("")
 		elif (collider as StaticBody3D).is_in_group("game"):
 			dialogueBox.changeIcon(5)
 			dialogueBox.changeText("Play 'Aberrant'")

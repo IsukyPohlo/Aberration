@@ -22,6 +22,7 @@ extends VBoxContainer
 @onready var game2: MeshInstance3D = $"../../Room/desk/desk(Clone)/drawer/drawer/game2"
 @onready var earnings: Label = $"../Earnings"
 @onready var earningNum: Label = $"../EarningNum"
+@onready var mirrorStatic: StaticBody3D = $"../../Mirror/Mirror"
 
 @export var icons: Array[CompressedTexture2D]
 @onready var interactText: Label = $"../InteractIcon/InteractText"
@@ -53,7 +54,7 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	
-	(numbnessShader.material as ShaderMaterial).set_shader_parameter("alpha", numbness.value/100 -0.2)
+	(numbnessShader.material as ShaderMaterial).set_shader_parameter("alpha", numbness.value/100)
 	#print(numbness.value/100)
 	
 	if state["progress"][0]:
@@ -65,6 +66,11 @@ func _process(delta: float) -> void:
 	#print(state["credits"])
 	
 	numbness.value = state["numbness"]
+	
+	if state["numbness"] > 90:
+		char.setCharHole(true)
+	else:
+		char.setCharHole(false)
 	
 func startDialogue(dialogueNode: String) -> void:
 	dialogue_finished = false
@@ -160,15 +166,15 @@ func _on_ez_dialogue_custom_signal_received(value: String):
 			laptop_input.text = ""
 			earningNum.text = "0"
 			print("save")
-			if state["numbness"] > 90:
-				char.setCharHole(true)
-			else:
-				char.setCharHole(false)
 	
 	if params[0] == "game":
 		if params[1] == "show":
 			game.visible = true
 			game2.visible = false
+			
+	if params[0] == "mirror":
+		if params[1] == "activate":
+			mirrorStatic.add_to_group("dialogue")
 			
 func setQuest(quest: int) -> void:
 	
