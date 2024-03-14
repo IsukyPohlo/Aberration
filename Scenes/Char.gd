@@ -60,6 +60,7 @@ var aberration: float = 0
 var openDoor: bool = false
 var windowBoost: bool = false
 var chairBoost: bool = false
+var aberrant: bool = false
 
 func _ready():
 	charModel.type = 0
@@ -140,8 +141,13 @@ func _process(delta: float) -> void:
 		
 		if aberration >= 90:
 			aberration_eyes.visible = true
-			MISSING_FURNITURE.set_shader_parameter("barrier_force", 0)
 			charModel.type = 5
+			
+			if aberrant == false && aberration >= 100:
+				aberrant = true
+				
+				
+				MISSING_FURNITURE.set_shader_parameter("barrier_force", 0)
 			
 	if aberrantGameMode == true:
 		if blaster_b.visible == false:
@@ -359,7 +365,7 @@ func pickObject()-> void:
 					print(collider.locked, collider.locked == null)
 					if collider.locked == true:
 
-						if dialogueBox.state["credits"] >= 500:
+						if dialogueBox.state["credits"] >= 1000:
 
 							collider.locked = false
 							var tw = create_tween()
@@ -367,7 +373,7 @@ func pickObject()-> void:
 							camera.cull_mask += 4
 							openDoor = true
 							
-							dialogueBox.state["credits"]-=500
+							dialogueBox.state["credits"]-=1000
 							
 							aberrant_game.stop()
 							fully_aberrant.stop()
@@ -389,6 +395,11 @@ func pickObject()-> void:
 			#print(dialogueBox.state["mission"])
 			
 			match dialogueBox.state["mission"]:
+				0:
+					dialogueBox.startDialogue("Game")
+					dialogueBox.state["mission"] += 1
+					dialogueBox.changeIcon(6)
+
 				1:
 					if dialogueBox.state["credits"] >= 10:
 						dialogueBox.startDialogue("Game")
@@ -408,18 +419,7 @@ func pickObject()-> void:
 						dialogueBox.state["mission"] += 1
 						dialogueBox.changeIcon(6)
 						dialogueBox.state["credits"]-= 100
-				4:
-					if dialogueBox.state["credits"] >= 150:
-						dialogueBox.startDialogue("Game")
-						dialogueBox.state["mission"] += 1
-						dialogueBox.changeIcon(6)
-						dialogueBox.state["credits"]-= 150
-				_:
-					dialogueBox.changeText("Play 'Aberrant'")
-					dialogueBox.state["mission"] += 1
-					dialogueBox.changeIcon(6)
-					dialogueBox.startDialogue("Game")
-		
+
 			
 	if collider is AnimatableBody3D:
 		if (collider as AnimatableBody3D).is_in_group("interact"):
@@ -481,7 +481,7 @@ func changeInteractIcon() -> void:
 				"door":
 					#print(collider.name, collider.locked)
 					if collider.locked == true:
-						dialogueBox.changeText("500 Credits")
+						dialogueBox.changeText("1000 Credits")
 					else:
 						dialogueBox.changeText("Open door")
 		
@@ -498,8 +498,6 @@ func changeInteractIcon() -> void:
 					dialogueBox.changeText("50 Credits to play 'Aberrant'")
 				3:
 					dialogueBox.changeText("100 Credits to play 'Aberrant'")
-				4:
-					dialogueBox.changeText("150 Credits to play 'Aberrant'")
 				_:
 					dialogueBox.changeText("Play 'Aberrant'")
 				

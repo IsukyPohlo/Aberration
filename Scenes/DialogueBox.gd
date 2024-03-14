@@ -18,6 +18,7 @@ extends VBoxContainer
 @onready var credsLabel: Label = $"../RightUp/CredsLabel"
 @onready var laptop_input: TextEdit = $"../LaptopInput"
 @onready var laptop_text: TextEdit = $"../LaptopScreen2/ColorRect/LaptopText"
+var MISSING_FURNITURE = preload("res://Assets/MissingFurniture.tres")
 
 @onready var game: StaticBody3D = $"../../NavigationRegion3D/Room/game"
 @onready var game2: MeshInstance3D = $"../../NavigationRegion3D/Room/desk/desk(Clone)/drawer/drawer/game2"
@@ -74,7 +75,7 @@ var state: Dictionary = {
 	"name": "",
 	"selectedSkin": 0,
 	"randomNumber": 0,
-	"credits": 10000,
+	"credits": 0,
 	"numbness": 0,
 	"quest": 0,
 	"mission": 0,
