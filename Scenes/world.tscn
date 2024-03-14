@@ -1,4 +1,4 @@
-[gd_scene load_steps=114 format=3 uid="uid://bqiq2xsct14id"]
+[gd_scene load_steps=118 format=3 uid="uid://bqiq2xsct14id"]
 
 [ext_resource type="Shader" path="res://Assets/retroPost.gdshader" id="1_3m5o6"]
 [ext_resource type="PackedScene" uid="uid://b0m8r8l2758ta" path="res://Scenes/Char.tscn" id="1_gjqyh"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" path="res://Scenes/AberrantSpawn.gd" id="4_wd5st"]
 [ext_resource type="PackedScene" uid="uid://dapkqoakd56v7" path="res://Assets/Models/Furniture/lampSquareCeiling.glb" id="5_dq752"]
 [ext_resource type="Material" uid="uid://3gaewcafd4nh" path="res://Assets/MissingFurniture.tres" id="5_o7gnt"]
+[ext_resource type="Script" path="res://Scenes/door.gd" id="7_bnu3n"]
 [ext_resource type="Texture2D" uid="uid://cuhj40lo7tnep" path="res://Assets/Sprites/Aberration.png" id="7_l3ogp"]
 [ext_resource type="PackedScene" uid="uid://dwwexe84rgp36" path="res://Scenes/char_model.tscn" id="13_6afqb"]
 [ext_resource type="Script" path="res://Scenes/DialogueBox.gd" id="14_hpm6y"]
@@ -668,6 +669,68 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_qop3i")
 
+[sub_resource type="Animation" id="Animation_r8ckb"]
+resource_name = "close"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, -3.14159, 0), Vector3(0, -1.5708, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../door2:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, -3.14159, 0), Vector3(0, -1.5708, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_ie3yw"]
+resource_name = "open"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, -1.5708, 0), Vector3(0, -3.14159, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../door2:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, -1.5708, 0), Vector3(0, -3.14159, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_q878o"]
+_data = {
+"close": SubResource("Animation_r8ckb"),
+"open": SubResource("Animation_ie3yw")
+}
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vob8f"]
 resource_name = "metal"
 albedo_color = Color(0.875925, 0.917687, 0.925891, 1)
@@ -728,7 +791,7 @@ blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_kbhew")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_nqkf3"]
-size = Vector3(1.11017, 1.95521, 0.2)
+size = Vector3(0.987739, 1.89852, 0.1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_cinxt"]
 size = Vector3(0.23605, 0.065, 0.297246)
@@ -930,6 +993,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.97344, 1.69863, 13.2995)
 [node name="AberrantSpawn" type="Marker3D" parent="NavigationRegion3D/Map"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25.4603, 1.3971, 12.7211)
 script = ExtResource("4_wd5st")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="NavigationRegion3D/Map/AberrantSpawn"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.408352, 1.63551, 0.437765)
 
 [node name="Room" type="Node3D" parent="NavigationRegion3D"]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 28.0336, 20.3418, 21.1617)
@@ -1172,24 +1238,31 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.12351, -0.0525188, -0.08864
 visible = false
 light_color = Color(0, 0.458824, 0.152941, 1)
 
-[node name="door" type="AnimatableBody3D" parent="NavigationRegion3D/Room"]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 4.86904, -0.0895081, 3.08434)
-collision_layer = 0
-collision_mask = 0
+[node name="door" type="Node3D" parent="NavigationRegion3D/Room"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.86904, -0.0895081, 3.08434)
 
 [node name="doorway(Clone)" type="MeshInstance3D" parent="NavigationRegion3D/Room/door"]
-transform = Transform3D(1.185, 0, 0, 0, 0.97, 0, 0, 0, 1, 0, 0, 0)
+transform = Transform3D(-5.1798e-08, 0, -1, 0, 0.97, 0, 1.185, 0, -4.37114e-08, 0, 0, 0)
 mesh = SubResource("ArrayMesh_8vld8")
 skeleton = NodePath("")
 
-[node name="door" type="MeshInstance3D" parent="NavigationRegion3D/Room/door/doorway(Clone)"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0567007, 0, -0.0890999)
+[node name="AnimationPlayer" type="AnimationPlayer" parent="NavigationRegion3D/Room/door"]
+root_node = NodePath("../door")
+libraries = {
+"": SubResource("AnimationLibrary_q878o")
+}
+
+[node name="door2" type="MeshInstance3D" parent="NavigationRegion3D/Room/door"]
+transform = Transform3D(-5.1798e-08, 0, -1, 0, 0.97, 0, 1.185, 0, -4.37114e-08, 0, 0, 0.067112)
 mesh = SubResource("ArrayMesh_qvbnf")
 skeleton = NodePath("")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Room/door"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, -3.12639e-12, 0, 1, 0.573761, 0.977608, -0.0939941)
-visible = false
+[node name="door" type="AnimatableBody3D" parent="NavigationRegion3D/Room/door" groups=["unlockable"]]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0)
+script = ExtResource("7_bnu3n")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Room/door/door"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.51263, 0.949368, -0.0681343)
 shape = SubResource("BoxShape3D_nqkf3")
 
 [node name="game" type="StaticBody3D" parent="NavigationRegion3D/Room" groups=["game"]]

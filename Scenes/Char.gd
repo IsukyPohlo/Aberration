@@ -234,11 +234,9 @@ func pickObject()-> void:
 			dialogueBox.changeText("")
 			match (collider.name):
 				"Window1":
-					#if state["numbness"] > 100:
 					collider.visible = false
 					collider.remove_from_group("unlockable")
 					collider.add_to_group("dialogue")
-						
 				"Window2":
 					collider.visible = false
 					collider.remove_from_group("unlockable")
@@ -261,6 +259,9 @@ func pickObject()-> void:
 					collider.find_child("chairDesk").visible = true
 					collider.find_child("chairDesk(Clone)").visible = false
 					collider.remove_from_group("unlockable")
+				"door":
+					collider.remove_from_group("unlockable")
+					collider.add_to_group("interact")
 		
 		if (collider as StaticBody3D).is_in_group("game"):
 			dialogueBox.startDialogue("Game")
@@ -322,6 +323,8 @@ func changeInteractIcon() -> void:
 					dialogueBox.changeText("50 Credits to buy a toilet")
 				"chair":
 					dialogueBox.changeText("200 Credits ( halve numbness while working)")
+				"door":
+					dialogueBox.changeText("2000 Credits")
 		
 		elif (collider as StaticBody3D).is_in_group("interact"):
 			dialogueBox.changeIcon(1)
