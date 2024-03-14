@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://buqk4dhu1gb3c"]
+
+[ext_resource type="Script" path="res://Scenes/enemy.gd" id="1_0x4yc"]
+[ext_resource type="PackedScene" uid="uid://dwwexe84rgp36" path="res://Scenes/char_model.tscn" id="2_m303r"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_758sj"]
+height = 1.8
+
+[node name="Enemy" type="CharacterBody3D" groups=["enemy"]]
+script = ExtResource("1_0x4yc")
+
+[node name="CharModel" parent="." instance=ExtResource("2_m303r")]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0.0171459, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("CapsuleShape3D_758sj")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+path_desired_distance = 0.5
+path_height_offset = 0.4

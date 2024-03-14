@@ -6,6 +6,6 @@
 render_priority = 0
 shader = ExtResource("1_fo7dg")
 shader_parameter/barrier_color = Color(0.05, 1, 0.5, 1)
-shader_parameter/barrier_force = 0.1
+shader_parameter/barrier_force = 1.0
 shader_parameter/barrier_interval = 10.0
 shader_parameter/barrier_speed = 3.0

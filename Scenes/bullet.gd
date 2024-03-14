@@ -13,6 +13,14 @@ func _process(delta: float) -> void:
 	if ray.is_colliding():
 		mesh.visible = false
 		particles.emitting = true
+		ray.enabled = false
+		
+		if ray.get_collider() == null:
+			return
+		
+		if ray.get_collider().is_in_group("enemy"):
+			ray.get_collider().damage(50.0)
+		
 		await get_tree().create_timer(0.8).timeout
 		queue_free()
 

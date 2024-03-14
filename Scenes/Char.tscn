@@ -187,6 +187,7 @@ target_position = Vector3(0, 0, -1)
 
 [node name="blasterB" type="MeshInstance3D" parent="Head/Camera3D"]
 transform = Transform3D(-1, 0, -8.74228e-08, 1.06581e-14, 1, 2.98023e-08, 8.74228e-08, 0, -1, 0.298728, -0.16868, -0.453792)
+visible = false
 mesh = SubResource("ArrayMesh_j8rla")
 skeleton = NodePath("")
 

@@ -28,13 +28,27 @@ var bullet = preload("res://Scenes/bullet.tscn")
 @onready var dialogueBox = $"../UI/DialogueBox"
 @onready var blasterAnim: AnimationPlayer = $Head/Camera3D/BlasterAnimPlayer
 @onready var blasterBarrel: RayCast3D = $Head/Camera3D/RayCast3D
+@onready var blaster_b: MeshInstance3D = $Head/Camera3D/blasterB
+
+var MISSING_FURNITURE = preload("res://Assets/MissingFurniture.tres")
+@onready var numb_eyes: ColorRect = $"../CanvasLayer/NumbEyes"
+@onready var aberrant_char_spawn: Marker3D = $"../NavigationRegion3D/Map/AberrantCharSpawn"
+@onready var aberrant_spawn: Marker3D = $"../NavigationRegion3D/Map/AberrantSpawn"
 
 var pickedObject: RigidBody3D
 var pullPower: float = 5.0
 
+var numb: bool = false
+var aberrantGameMode: bool = false
+var shootSpeed: float = 1
+var killCount: int = 0
+var numbness: float = 0
+var aberration: float = 0
+
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	charModel.setUpperAnim("Idle")
+	MISSING_FURNITURE.set_shader_parameter("barrier_force", 1)
 
 func _unhandled_input(event):
 	if event is InputEventMouseMotion && Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
@@ -44,7 +58,6 @@ func _unhandled_input(event):
 		camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-60), deg_to_rad(60))
 
 func _process(delta: float) -> void:
-	
 	changeInteractIcon()
 	
 	if Input.is_action_just_pressed("ui_cancel"):
@@ -66,14 +79,37 @@ func _process(delta: float) -> void:
 		print(camera.position)
 		
 	if Input.is_action_pressed("shoot"):
-		if !blasterAnim.is_playing():
+		if !blasterAnim.is_playing() && aberrantGameMode == true:
 			blasterAnim.play("shoot")
-			blasterAnim.speed_scale = 2
+			blasterAnim.speed_scale = shootSpeed
 			var instance = bullet.instantiate()
 			instance.position = blasterBarrel.global_position
 			instance.transform.basis = blasterBarrel.global_transform.basis
 			get_parent().add_child(instance)
 	
+	if dialogueBox.state["numbness"] >= 90:
+		charModel.type = 2
+		numb_eyes.visible = true
+		var tw = create_tween()
+		tw.tween_property(numb_eyes.get_material(), "shader_parameter/strength", 1000, 240.0)
+		
+		if numb == false && dialogueBox.state["numbness"] >= 100:
+			numb = true
+			MISSING_FURNITURE.set_shader_parameter("barrier_force", 0)
+	
+	else:
+		charModel.type = 1
+		var tw = create_tween()
+		tw.tween_property(numb_eyes.get_material(), "shader_parameter/strength", 0, 2)
+		
+	#aberrant stuff here
+	if aberrantGameMode == true:
+		if blaster_b.visible == false:
+			blaster_b.visible = true
+	else:
+		if blaster_b.visible == true:
+			blaster_b.visible = false
+		
 func _physics_process(delta):
 	
 	# Very based on: https://github.com/LegionGames/FirstPersonController
@@ -155,13 +191,22 @@ func pickObject()-> void:
 	if collider is RigidBody3D:
 		if (collider as RigidBody3D).is_in_group("pickable"):
 			pickedObject = collider
-			charModel.setUpperAnim("Interact")
 
 	if collider is StaticBody3D:
 		if (collider as StaticBody3D).is_in_group("work"):
 			dialogueBox.startDialogue("work")
 			
+		if dialogueBox.state["numbness"] >= 100:
+			match (collider.name):
+				"Mirror":
+					collider.remove_from_group("dialogue")
+					dialogueBox.changeText("")
+					dialogueBox.changeIcon(0)
+					dialogueBox.startDialogue("Mirror")
+			return
+			
 		if (collider as StaticBody3D).is_in_group("dialogue"):
+			
 			dialogueBox.startDialogue(collider.name)
 			match (collider.name):
 				"Mirror":
@@ -216,6 +261,12 @@ func pickObject()-> void:
 					collider.find_child("chairDesk").visible = true
 					collider.find_child("chairDesk(Clone)").visible = false
 					collider.remove_from_group("unlockable")
+		
+		if (collider as StaticBody3D).is_in_group("game"):
+			dialogueBox.startDialogue("Game")
+			dialogueBox.state["mission"] += 1
+			dialogueBox.changeIcon(6)
+			
 			
 	if collider is AnimatableBody3D:
 		if (collider as AnimatableBody3D).is_in_group("interact"):
@@ -232,16 +283,29 @@ func rotateCharSkin(increment: bool) -> int:
 	return charModel.changeSkin(increment)
 	
 func setCharSkin(idx: int) -> void:
-	charModel.setSkin(idx)
-	
-func setCharHole(visible: bool) -> void:
-	charModel.enableHole(visible)
+	charModel.setSkin(idx)	
 
 func changeInteractIcon() -> void:
 	var collider = interaction.get_collider()
 
 	if collider is StaticBody3D:
-		if (collider as StaticBody3D).is_in_group("unlockable"):
+		
+		if (collider as StaticBody3D).is_in_group("work"):
+			dialogueBox.changeIcon(2)
+			dialogueBox.changeText("WORK")
+			
+		elif (collider as StaticBody3D).is_in_group("dialogue"):
+			dialogueBox.changeIcon(4)
+			match (collider.name):
+				"Mirror":
+					dialogueBox.changeText("Check your status")
+				_: 
+					dialogueBox.changeText("")
+					
+		elif dialogueBox.state["numbness"] >= 100:
+			return
+		
+		elif (collider as StaticBody3D).is_in_group("unlockable"):
 			dialogueBox.changeIcon(3)
 			match (collider.name):
 				"Window1":
@@ -258,23 +322,23 @@ func changeInteractIcon() -> void:
 					dialogueBox.changeText("50 Credits to buy a toilet")
 				"chair":
 					dialogueBox.changeText("200 Credits ( halve numbness while working)")
-					
-		elif (collider as StaticBody3D).is_in_group("work"):
-			dialogueBox.changeIcon(2)
-			dialogueBox.changeText("WORK")
+		
 		elif (collider as StaticBody3D).is_in_group("interact"):
 			dialogueBox.changeIcon(1)
 			dialogueBox.changeText("")
-		elif (collider as StaticBody3D).is_in_group("dialogue"):
-			dialogueBox.changeIcon(4)
-			match (collider.name):
-				"Mirror":
-					dialogueBox.changeText("Check your status")
-				_: 
-					dialogueBox.changeText("")
+
 		elif (collider as StaticBody3D).is_in_group("game"):
 			dialogueBox.changeIcon(5)
-			dialogueBox.changeText("Play 'Aberrant'")
+			match dialogueBox.state["mission"]:
+				1:
+					dialogueBox.changeText("50 Credits to play 'Aberrant'")
+				2:
+					dialogueBox.changeText("100 Credits to play 'Aberrant'")
+				3:
+					dialogueBox.changeText("100 Credits to play 'Aberrant'")
+				_:
+					dialogueBox.changeText("Play 'Aberrant'")
+				
 		else:
 			dialogueBox.changeIcon(0)
 	else:

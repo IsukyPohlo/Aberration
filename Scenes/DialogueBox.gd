@@ -18,8 +18,10 @@ extends VBoxContainer
 @onready var credsLabel: Label = $"../RightUp/CredsLabel"
 @onready var laptop_input: TextEdit = $"../LaptopInput"
 @onready var laptop_text: TextEdit = $"../LaptopScreen2/ColorRect/LaptopText"
-@onready var game: StaticBody3D = $"../../Room/game"
-@onready var game2: MeshInstance3D = $"../../Room/desk/desk(Clone)/drawer/drawer/game2"
+
+@onready var game: StaticBody3D = $"../../NavigationRegion3D/Room/game"
+@onready var game2: MeshInstance3D = $"../../NavigationRegion3D/Room/desk/desk(Clone)/drawer/drawer/game2"
+
 @onready var earnings: Label = $"../Earnings"
 @onready var earningNum: Label = $"../EarningNum"
 @onready var mirrorStatic: StaticBody3D = $"../../Mirror/Mirror"
@@ -29,8 +31,31 @@ extends VBoxContainer
 @onready var interactIcon: Sprite2D = $"../InteractIcon/Sprite2D"
 @onready var numbness: ProgressBar = $"../LeftDown/ProgressBar"
 
-@onready var numbnessShader: ColorRect = $"../../CanvasLayer/Numbness"
+@onready var hole_face: Node3D = $"../../NavigationRegion3D/Room/HoleFace"
+@onready var aberrant: Sprite3D = $"../../NavigationRegion3D/Room/aberrant"
+@onready var aberrant2: Sprite3D = $"../../NavigationRegion3D/Room/aberrant2"
+@onready var aberrant3: Sprite3D = $"../../NavigationRegion3D/Room/aberrant3"
+@onready var aberrant4: Sprite3D = $"../../NavigationRegion3D/Room/aberrant4"
 
+
+@onready var numbnessShader: ColorRect = $"../../CanvasLayer/Numbness"
+@onready var numbShader: ColorRect = $"../../CanvasLayer/Numb"
+@onready var aberration_vision: ColorRect = $"../../CanvasLayer/AberrationVision"
+
+@onready var room_spawn: Marker3D = $"../../NavigationRegion3D/Room/RoomSpawn"
+@onready var aberrant_char_spawn: Marker3D = $"../../NavigationRegion3D/Map/AberrantCharSpawn"
+
+@onready var aberrant_spawn: Marker3D = $"../../NavigationRegion3D/Map/AberrantSpawn"
+@onready var right_down: Control = $"../RightDown"
+@onready var aberrationBar: ProgressBar = $"../RightDown/ProgressBar"
+@onready var mission: Label = $"../Mission"
+@onready var crosshair: Sprite2D = $"../Center/Crosshair"
+@onready var killcount: Label = $"../Mission/Killcount"
+
+@onready var endingScreen: Control = $"../../CanvasLayer/EndingScreen"
+@onready var endingLabel: Label = $"../../CanvasLayer/EndingScreen/endingLabel"
+
+var endMission = false
 var dialogue_finished = false
 var state: Dictionary = {
 	"dialogue": "intro",
@@ -40,6 +65,8 @@ var state: Dictionary = {
 	"credits": 0,
 	"numbness": 0,
 	"quest": 0,
+	"mission": 0,
+	"aberration": 0,
 	"progress" : [
 		false, false, false, false, false, false
 	],
@@ -51,10 +78,12 @@ var portraits: Dictionary = {
 func _ready() -> void:
 	state["randomNumber"] = RandomNumberGenerator.new().randi()
 	startDialogue("intro")
+	var tw = create_tween()
+	tw.tween_property(numbShader.get_material(), "shader_parameter/spread", 0, 1)
 
 func _process(delta: float) -> void:
 	
-	(numbnessShader.material as ShaderMaterial).set_shader_parameter("alpha", numbness.value/100)
+	(numbnessShader.material as ShaderMaterial).set_shader_parameter("alpha", numbness.value/100 - 0.1)
 	#print(numbness.value/100)
 	
 	if state["progress"][0]:
@@ -63,14 +92,17 @@ func _process(delta: float) -> void:
 		nameLabel.text = state["name"]
 		
 	credsLabel.text = str(state["credits"])
-	#print(state["credits"])
 	
+	killcount.text = str(char.killCount)
+	
+	state["numbness"] = char.numbness
 	numbness.value = state["numbness"]
 	
-	if state["numbness"] > 90:
-		char.setCharHole(true)
-	else:
-		char.setCharHole(false)
+	state["aberration"] = char.aberration
+	aberrationBar.value = state["aberration"]
+	
+	if !endMission: 
+		checkEndMission()
 	
 func startDialogue(dialogueNode: String) -> void:
 	dialogue_finished = false
@@ -171,10 +203,89 @@ func _on_ez_dialogue_custom_signal_received(value: String):
 		if params[1] == "show":
 			game.visible = true
 			game2.visible = false
+		if params[1] == "start":
+			right_down.visible = true
+			aberration_vision.visible = true
+			mission.visible = true
+			crosshair.visible = true
+			char.aberrantGameMode = true
+			match state["mission"]:
+				0: 
+					char.global_position = aberrant_char_spawn.global_position
+					mission.text = "Erorr?"
+					endMission = false
+				1: 
+					char.global_position = aberrant_char_spawn.global_position
+					aberrant_spawn.spawn(20,1)
+					mission.text = "Level 1: Kill 20"
+					endMission = false
+					aberrant.visible = true
+				2: 
+					char.global_position = aberrant_char_spawn.global_position
+					aberrant_spawn.spawn(30,2)
+					mission.text = "Level 2: Kill 30"
+					endMission = false
+					hole_face.visible = true
+					aberrant2.visible = true
+					aberrant3.visible = true
+				3: 
+					char.global_position = aberrant_char_spawn.global_position
+					aberrant_spawn.spawn(40,3)
+					mission.text = "Level 3: Kill 40"
+					endMission = false
+					aberrant.layers = 1
+					aberrant2.layers = 1
+					aberrant3.layers = 1
+					aberrant4.layers = 1
+				4: 
+					char.global_position = room_spawn.global_position
+					aberrant_spawn.spawn(10,4)
+					mission.text = "Level 4: Go to your room"
+					endMission = false
+			
+		if params[1] == "end":
+			
+			aberration_vision.visible = false
+			mission.visible = false
+			crosshair.visible = false
+			char.aberrantGameMode = false
+			char.killCount = 0
 			
 	if params[0] == "mirror":
 		if params[1] == "activate":
 			mirrorStatic.add_to_group("dialogue")
+			
+	if params[0] == "numbEnding":
+		numbShader.visible = true
+		var tw = create_tween()
+		tw.tween_property(numbShader.get_material(), "shader_parameter/spread", -10, 200.0)
+		
+		
+		endingScreen.visible = true
+		endingLabel.text = "Numb ending"
+	
+func checkEndMission()-> void:
+	match state["mission"]:
+		1: 
+			if char.killCount >= 20:
+				startDialogue("Mission1")
+				char.global_position = room_spawn.global_position
+				endMission = true
+		2: 
+			if char.killCount >= 30:
+				startDialogue("Mission2")
+				char.global_position = room_spawn.global_position
+				endMission = true
+		3: 
+			if char.killCount >= 40:
+				startDialogue("Mission3")
+				char.global_position = room_spawn.global_position
+				endMission = true
+		4: 
+			if char.killCount >= 10:
+				startDialogue("Mission4")
+				char.global_position = room_spawn.global_position
+				endMission = true
 			
 func setQuest(quest: int) -> void:
 	
@@ -204,6 +315,21 @@ func _on_right_button_down() -> void:
 
 func _on_laptop_input_text_changed() -> void:
 	laptop_text.text = laptop_input.text
-	state["numbness"] +=0.5
+	char.numbness +=0.5
 	earningNum.text = str(len(laptop_input.text))
 	
+	if state["mission"] >= 1:
+		
+		var rng = RandomNumberGenerator.new()
+		rng.randomize()
+		var num = rng.randi_range(0, 50)
+		if num == 1:
+			aberrant.layers = 1
+			await get_tree().create_timer(0.02).timeout
+			aberrant.layers = 2
+			print("mostro")
+		else:
+			aberrant.layers = 2
+			print("no mostro")
+func _on_retry_down() -> void:
+	get_tree().reload_current_scene()
