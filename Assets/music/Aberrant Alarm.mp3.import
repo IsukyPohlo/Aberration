@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dfhg3mi0uoam4"
+path="res://.godot/imported/Aberrant Alarm.mp3-5e1d8b961ff61d89464af1b5422c69e1.mp3str"
+
+[deps]
+
+source_file="res://Assets/music/Aberrant Alarm.mp3"
+dest_files=["res://.godot/imported/Aberrant Alarm.mp3-5e1d8b961ff61d89464af1b5422c69e1.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

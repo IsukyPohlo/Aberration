@@ -4,10 +4,12 @@
 [ext_resource type="PackedScene" uid="uid://dwwexe84rgp36" path="res://Scenes/char_model.tscn" id="2_m303r"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_758sj"]
+radius = 0.4
 height = 1.8
 
 [node name="Enemy" type="CharacterBody3D" groups=["enemy"]]
 script = ExtResource("1_0x4yc")
+type = 2
 
 [node name="CharModel" parent="." instance=ExtResource("2_m303r")]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0.0171459, 0)

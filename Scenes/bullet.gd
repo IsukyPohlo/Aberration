@@ -19,7 +19,7 @@ func _process(delta: float) -> void:
 			return
 		
 		if ray.get_collider().is_in_group("enemy"):
-			ray.get_collider().damage(50.0)
+			ray.get_collider().damage(100.0)
 		
 		await get_tree().create_timer(0.8).timeout
 		queue_free()

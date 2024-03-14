@@ -17,9 +17,13 @@ extends Node3D
 @export var type: int 
 @export_flags_3d_render var layers_3d_render = 1
 
-var skinIdx = 0
+var min = 3
+var skinIdx = min
 
 func _process(delta: float) -> void:
+	
+	#print(type)
+	
 	if layers_3d_render != null && layers_3d_render != 0:
 		numbhole.layers = layers_3d_render
 		character_large_male.layers = layers_3d_render
@@ -29,15 +33,17 @@ func _process(delta: float) -> void:
 	pass
 
 func changeSkin(increment: bool) -> int:
+	
+	
 
 	if increment:
 		if skinIdx < len(skins)-1:
 			skinIdx = skinIdx + 1
 		else:
-			skinIdx = 1
+			skinIdx = min
 		
 	else:
-		if skinIdx > 1:
+		if skinIdx > min:
 			skinIdx = skinIdx - 1
 		else:
 			skinIdx = len(skins) - 1
@@ -102,21 +108,40 @@ func enableAberrantCharCamera(visible: bool) -> void:
 
 func typeSelect(type: int) -> void:
 	match type:
+		0:
+			enableHole(false)
+			enableAberrantNPC(false)
+			enableAberrantChar(false)
+			enableAberrantCharCamera(false)
+		1: 
+			enableHole(false)
+			enableAberrantNPC(false)
+			enableAberrantChar(false)
+			enableAberrantCharCamera(false)
+			setSkin(1)
 		2: 
 			enableHole(true)
 			enableAberrantNPC(false)
 			enableAberrantChar(false)
+			enableAberrantCharCamera(false)
+			setSkin(1)
 		3:
 			enableHole(false)
 			enableAberrantNPC(true)
 			enableAberrantChar(false)
+			enableAberrantCharCamera(false)
+			setSkin(2)
 		4:
 			enableHole(false)
 			enableAberrantNPC(false)
 			enableAberrantChar(true)
-		_:
+			enableAberrantCharCamera(false)
+			setSkin(2)
+		5:
 			enableHole(false)
 			enableAberrantNPC(false)
 			enableAberrantChar(false)
+			enableAberrantCharCamera(true)
+			setSkin(2)
 
 

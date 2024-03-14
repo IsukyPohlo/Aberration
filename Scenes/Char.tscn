@@ -1,12 +1,10 @@
-[gd_scene load_steps=16 format=3 uid="uid://b0m8r8l2758ta"]
+[gd_scene load_steps=12 format=3 uid="uid://b0m8r8l2758ta"]
 
 [ext_resource type="Script" path="res://Scenes/Char.gd" id="1_3skr1"]
 [ext_resource type="PackedScene" uid="uid://dwwexe84rgp36" path="res://Scenes/char_model.tscn" id="2_cn4k6"]
-[ext_resource type="Material" uid="uid://cknp6b3mjkee7" path="res://Assets/Models/Skins/MaleA.tres" id="3_cqn5o"]
-[ext_resource type="Material" uid="uid://bh5habu4cr8xv" path="res://Assets/Models/Skins/MaleB.tres" id="4_fvdqy"]
-[ext_resource type="Material" uid="uid://cm61rk4dqnomp" path="res://Assets/Models/Skins/FantasyB.tres" id="5_cv58v"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_lqjdh"]
+radius = 0.4
 height = 1.8
 
 [sub_resource type="Animation" id="Animation_rd0jr"]
@@ -149,11 +147,6 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_7u3w6")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jih3j"]
-diffuse_mode = 3
-specular_mode = 1
-albedo_color = Color(0.529412, 0.529412, 0.529412, 1)
-
 [node name="Char" type="CharacterBody3D"]
 script = ExtResource("1_3skr1")
 JUMP_VELOCITY = 4.5
@@ -167,7 +160,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
 
 [node name="Camera3D" type="Camera3D" parent="Head"]
 transform = Transform3D(1, 0, 0, 0, 0.959472, 0.281806, 0, -0.281806, 0.959472, 0, 0, 0)
-cull_mask = 1048573
+cull_mask = 5
 
 [node name="Interaction" type="RayCast3D" parent="Head/Camera3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0378799, 0)
@@ -193,4 +186,3 @@ skeleton = NodePath("")
 
 [node name="CharModel" parent="." instance=ExtResource("2_cn4k6")]
 transform = Transform3D(-1, 0, 1.50996e-07, 0, 1, 0, -1.50996e-07, 0, -1, 0, 0.0747761, 0)
-skins = Array[BaseMaterial3D]([SubResource("StandardMaterial3D_jih3j"), ExtResource("3_cqn5o"), ExtResource("4_fvdqy"), ExtResource("5_cv58v")])

@@ -1,4 +1,4 @@
-[gd_scene load_steps=118 format=3 uid="uid://bqiq2xsct14id"]
+[gd_scene load_steps=136 format=3 uid="uid://bqiq2xsct14id"]
 
 [ext_resource type="Shader" path="res://Assets/retroPost.gdshader" id="1_3m5o6"]
 [ext_resource type="PackedScene" uid="uid://b0m8r8l2758ta" path="res://Scenes/Char.tscn" id="1_gjqyh"]
@@ -6,10 +6,12 @@
 [ext_resource type="MeshLibrary" uid="uid://cbn5qekj7iynf" path="res://Scenes/BuildGrid.tres" id="2_kgumg"]
 [ext_resource type="Script" path="res://Scenes/drawer.gd" id="4_p6mjh"]
 [ext_resource type="Script" path="res://Scenes/AberrantSpawn.gd" id="4_wd5st"]
+[ext_resource type="Texture2D" uid="uid://fxov1eqrxeg8" path="res://Assets/UI/AberrationCover.png" id="5_dbvsu"]
 [ext_resource type="PackedScene" uid="uid://dapkqoakd56v7" path="res://Assets/Models/Furniture/lampSquareCeiling.glb" id="5_dq752"]
 [ext_resource type="Material" uid="uid://3gaewcafd4nh" path="res://Assets/MissingFurniture.tres" id="5_o7gnt"]
 [ext_resource type="Script" path="res://Scenes/door.gd" id="7_bnu3n"]
 [ext_resource type="Texture2D" uid="uid://cuhj40lo7tnep" path="res://Assets/Sprites/Aberration.png" id="7_l3ogp"]
+[ext_resource type="Texture2D" uid="uid://ekvtschffbin" path="res://Assets/UI/xxxxx.png" id="9_ral10"]
 [ext_resource type="PackedScene" uid="uid://dwwexe84rgp36" path="res://Scenes/char_model.tscn" id="13_6afqb"]
 [ext_resource type="Script" path="res://Scenes/DialogueBox.gd" id="14_hpm6y"]
 [ext_resource type="Script" path="res://addons/ez_dialogue/ez_dialogue_node.gd" id="15_rh4gp"]
@@ -28,6 +30,18 @@
 [ext_resource type="Shader" path="res://Assets/chromatic3.gdshader" id="26_yrwf0"]
 [ext_resource type="Shader" path="res://Assets/vignette.gdshader" id="27_f0g2s"]
 [ext_resource type="Texture2D" uid="uid://dor50mhkpomer" path="res://Assets/Untitled-1.png" id="28_3uyjn"]
+[ext_resource type="AudioStream" uid="uid://b0yt0au3e11pt" path="res://Assets/music/Aberrant Wind.mp3" id="31_5ya15"]
+[ext_resource type="AudioStream" uid="uid://ckvsb48akt41t" path="res://Assets/sounds/Footsteps.mp3" id="32_sswkk"]
+[ext_resource type="AudioStream" uid="uid://g61uuueeemy3" path="res://Assets/sounds/Door open sound effect.mp3" id="33_ru42o"]
+[ext_resource type="AudioStream" uid="uid://wgsmx7h6a2ns" path="res://Assets/sounds/DoorOpening.mp3" id="33_xc73l"]
+[ext_resource type="AudioStream" uid="uid://dkn8p3c433hrb" path="res://Assets/sounds/Laser Beam Gun Sound Effect.mp3" id="34_ti2tx"]
+[ext_resource type="AudioStream" uid="uid://dc03ukw21rchb" path="res://Assets/sounds/Typing.mp3" id="36_vxxxn"]
+[ext_resource type="AudioStream" uid="uid://dfhg3mi0uoam4" path="res://Assets/music/Aberrant Alarm.mp3" id="37_hqlmj"]
+[ext_resource type="AudioStream" uid="uid://c6hc6o23mnwil" path="res://Assets/music/Aberrant Aberration.mp3" id="37_td1vq"]
+[ext_resource type="AudioStream" uid="uid://cu2so2lrt0hwc" path="res://Assets/music/Aberrant Aberrant.mp3" id="38_nb5jv"]
+[ext_resource type="AudioStream" uid="uid://cilhjac4squjf" path="res://Assets/music/Aberrant Disturbness Fix.mp3" id="40_6gw21"]
+[ext_resource type="AudioStream" uid="uid://c3d7t7v7jd1hv" path="res://Assets/music/Aberrant Numbness.mp3" id="40_lagna"]
+[ext_resource type="AudioStream" uid="uid://dt2imwcjewbtq" path="res://Assets/music/Aberrant Truth.mp3" id="42_5evee"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_hd5ni"]
 sky_top_color = Color(1, 1, 1, 1)
@@ -269,6 +283,12 @@ shadow_mesh = SubResource("ArrayMesh_8p1xy")
 
 [sub_resource type="BoxMesh" id="BoxMesh_2b8km"]
 size = Vector3(0.125, 0.035, 0.2)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_1tw4v"]
+size = Vector2(0.12, 0.18)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pcfkb"]
+albedo_texture = ExtResource("5_dbvsu")
 
 [sub_resource type="QuadMesh" id="QuadMesh_xr51h"]
 size = Vector2(0.15, 0.2)
@@ -870,6 +890,9 @@ shadow_mesh = SubResource("ArrayMesh_rs2f3")
 [sub_resource type="BoxShape3D" id="BoxShape3D_aqinr"]
 size = Vector3(2, 3, 0.1)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_ujnav"]
+size = Vector3(5, 20, 500)
+
 [sub_resource type="SphereMesh" id="SphereMesh_8uh8h"]
 radius = 2.5
 height = 5.0
@@ -878,6 +901,9 @@ height = 5.0
 shading_mode = 0
 disable_fog = true
 albedo_color = Color(0, 0.94902, 1, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_s6xhr"]
+size = Vector3(5, 20, 50)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_oknit"]
 shader = ExtResource("1_3m5o6")
@@ -924,7 +950,7 @@ shader_parameter/red_mult = 1.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_gnbfb"]
 shader = ExtResource("25_6ipma")
-shader_parameter/strength = 0.0
+shader_parameter/strength = 0.5
 shader_parameter/offset_image = ExtResource("26_xvxwj")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_uvgad"]
@@ -990,12 +1016,19 @@ metadata/_editor_floor_ = Vector3(0, 7, 0)
 [node name="AberrantCharSpawn" type="Marker3D" parent="NavigationRegion3D/Map"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.97344, 1.69863, 13.2995)
 
+[node name="AberrantCharSpawn3" type="Marker3D" parent="NavigationRegion3D/Map"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25.9734, 0.893115, 13.2995)
+
 [node name="AberrantSpawn" type="Marker3D" parent="NavigationRegion3D/Map"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25.4603, 1.3971, 12.7211)
 script = ExtResource("4_wd5st")
 
 [node name="OmniLight3D" type="OmniLight3D" parent="NavigationRegion3D/Map/AberrantSpawn"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.408352, 1.63551, 0.437765)
+
+[node name="AberrantSpawn3" type="Marker3D" parent="NavigationRegion3D/Map"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.02778, 1.3971, 12.7211)
+script = ExtResource("4_wd5st")
 
 [node name="Room" type="Node3D" parent="NavigationRegion3D"]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 28.0336, 20.3418, 21.1617)
@@ -1057,6 +1090,11 @@ surface_material_override/0 = SubResource("StandardMaterial3D_dl8md")
 transform = Transform3D(0.999994, 0, 0.00331605, 0, 1, 0, -0.00331605, 0, 0.999994, 0.281536, 0.0440674, 0.153744)
 mesh = SubResource("BoxMesh_2b8km")
 skeleton = NodePath("../tablet")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="NavigationRegion3D/Room/desk/desk(Clone)/drawer/drawer/game2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0194874, 0)
+mesh = SubResource("PlaneMesh_1tw4v")
+surface_material_override/0 = SubResource("StandardMaterial3D_pcfkb")
 
 [node name="tablet" type="StaticBody3D" parent="NavigationRegion3D/Room/desk/desk(Clone)/drawer/drawer" groups=["dialogue"]]
 transform = Transform3D(0.948953, 0, -0.315417, 0, 1, 0, 0.315417, 0, 0.948953, 0.146965, 0.0440674, 0.166145)
@@ -1126,6 +1164,16 @@ transform = Transform3D(-0.0839373, -2.10359, 6.08995e-08, 2.10359, -0.0839373, 
 mesh = SubResource("ArrayMesh_ff7q2")
 skeleton = NodePath("")
 surface_material_override/0 = ExtResource("5_o7gnt")
+
+[node name="toilet2" type="MeshInstance3D" parent="NavigationRegion3D/Room/toilet"]
+visible = false
+mesh = SubResource("ArrayMesh_3ws7j")
+skeleton = NodePath("")
+
+[node name="cover" type="MeshInstance3D" parent="NavigationRegion3D/Room/toilet/toilet2"]
+transform = Transform3D(-0.0839373, -2.10359, 6.08995e-08, 2.10359, -0.0839373, -5.8518e-08, 6.08995e-08, 5.8518e-08, 2.10526, 0.509228, 0.958797, -0.658001)
+mesh = SubResource("ArrayMesh_ff7q2")
+skeleton = NodePath("")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Room/toilet"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.933506, 0.494129, -0.742992)
@@ -1238,32 +1286,445 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.12351, -0.0525188, -0.08864
 visible = false
 light_color = Color(0, 0.458824, 0.152941, 1)
 
-[node name="door" type="Node3D" parent="NavigationRegion3D/Room"]
+[node name="door1" type="Node3D" parent="NavigationRegion3D/Room"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.86904, -0.0895081, 3.08434)
 
-[node name="doorway(Clone)" type="MeshInstance3D" parent="NavigationRegion3D/Room/door"]
+[node name="doorway(Clone)" type="MeshInstance3D" parent="NavigationRegion3D/Room/door1"]
 transform = Transform3D(-5.1798e-08, 0, -1, 0, 0.97, 0, 1.185, 0, -4.37114e-08, 0, 0, 0)
 mesh = SubResource("ArrayMesh_8vld8")
 skeleton = NodePath("")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="NavigationRegion3D/Room/door"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="NavigationRegion3D/Room/door1"]
 root_node = NodePath("../door")
 libraries = {
 "": SubResource("AnimationLibrary_q878o")
 }
 
-[node name="door2" type="MeshInstance3D" parent="NavigationRegion3D/Room/door"]
+[node name="door2" type="MeshInstance3D" parent="NavigationRegion3D/Room/door1"]
 transform = Transform3D(-5.1798e-08, 0, -1, 0, 0.97, 0, 1.185, 0, -4.37114e-08, 0, 0, 0.067112)
 mesh = SubResource("ArrayMesh_qvbnf")
 skeleton = NodePath("")
 
-[node name="door" type="AnimatableBody3D" parent="NavigationRegion3D/Room/door" groups=["unlockable"]]
+[node name="door" type="AnimatableBody3D" parent="NavigationRegion3D/Room/door1" groups=["unlockable"]]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0)
+script = ExtResource("7_bnu3n")
+locked = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Room/door1/door"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.51263, 0.949368, -0.0681343)
+shape = SubResource("BoxShape3D_nqkf3")
+
+[node name="door2" type="Node3D" parent="NavigationRegion3D/Room"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.86904, -0.0895081, 8.70785)
+
+[node name="doorway(Clone)" type="MeshInstance3D" parent="NavigationRegion3D/Room/door2"]
+transform = Transform3D(-5.1798e-08, 0, -1, 0, 0.97, 0, 1.185, 0, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("ArrayMesh_8vld8")
+skeleton = NodePath("")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="NavigationRegion3D/Room/door2"]
+root_node = NodePath("../door")
+libraries = {
+"": SubResource("AnimationLibrary_q878o")
+}
+
+[node name="door2" type="MeshInstance3D" parent="NavigationRegion3D/Room/door2"]
+transform = Transform3D(-5.1798e-08, 0, -1, 0, 0.97, 0, 1.185, 0, -4.37114e-08, 0, 0, 0.067112)
+mesh = SubResource("ArrayMesh_qvbnf")
+skeleton = NodePath("")
+
+[node name="door" type="AnimatableBody3D" parent="NavigationRegion3D/Room/door2" groups=["unlockable"]]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0)
 script = ExtResource("7_bnu3n")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Room/door/door"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Room/door2/door"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.51263, 0.949368, -0.0681343)
 shape = SubResource("BoxShape3D_nqkf3")
+
+[node name="door3" type="Node3D" parent="NavigationRegion3D/Room"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.86904, -2.88563, 3.08434)
+
+[node name="doorway(Clone)" type="MeshInstance3D" parent="NavigationRegion3D/Room/door3"]
+transform = Transform3D(-5.1798e-08, 0, -1, 0, 0.97, 0, 1.185, 0, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("ArrayMesh_8vld8")
+skeleton = NodePath("")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="NavigationRegion3D/Room/door3"]
+root_node = NodePath("../door")
+libraries = {
+"": SubResource("AnimationLibrary_q878o")
+}
+
+[node name="door2" type="MeshInstance3D" parent="NavigationRegion3D/Room/door3"]
+transform = Transform3D(-5.1798e-08, 0, -1, 0, 0.97, 0, 1.185, 0, -4.37114e-08, 0, 0, 0.067112)
+mesh = SubResource("ArrayMesh_qvbnf")
+skeleton = NodePath("")
+
+[node name="door" type="AnimatableBody3D" parent="NavigationRegion3D/Room/door3" groups=["unlockable"]]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0)
+script = ExtResource("7_bnu3n")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Room/door3/door"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.51263, 0.949368, -0.0681343)
+shape = SubResource("BoxShape3D_nqkf3")
+
+[node name="door4" type="Node3D" parent="NavigationRegion3D/Room"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.86904, -2.88563, 8.70785)
+
+[node name="doorway(Clone)" type="MeshInstance3D" parent="NavigationRegion3D/Room/door4"]
+transform = Transform3D(-5.1798e-08, 0, -1, 0, 0.97, 0, 1.185, 0, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("ArrayMesh_8vld8")
+skeleton = NodePath("")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="NavigationRegion3D/Room/door4"]
+root_node = NodePath("../door")
+libraries = {
+"": SubResource("AnimationLibrary_q878o")
+}
+
+[node name="door2" type="MeshInstance3D" parent="NavigationRegion3D/Room/door4"]
+transform = Transform3D(-5.1798e-08, 0, -1, 0, 0.97, 0, 1.185, 0, -4.37114e-08, 0, 0, 0.067112)
+mesh = SubResource("ArrayMesh_qvbnf")
+skeleton = NodePath("")
+
+[node name="door" type="AnimatableBody3D" parent="NavigationRegion3D/Room/door4" groups=["unlockable"]]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0)
+script = ExtResource("7_bnu3n")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Room/door4/door"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.51263, 0.949368, -0.0681343)
+shape = SubResource("BoxShape3D_nqkf3")
+
+[node name="door5" type="Node3D" parent="NavigationRegion3D/Room"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.86904, -5.66726, 3.08434)
+
+[node name="doorway(Clone)" type="MeshInstance3D" parent="NavigationRegion3D/Room/door5"]
+transform = Transform3D(-5.1798e-08, 0, -1, 0, 0.97, 0, 1.185, 0, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("ArrayMesh_8vld8")
+skeleton = NodePath("")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="NavigationRegion3D/Room/door5"]
+root_node = NodePath("../door")
+libraries = {
+"": SubResource("AnimationLibrary_q878o")
+}
+
+[node name="door2" type="MeshInstance3D" parent="NavigationRegion3D/Room/door5"]
+transform = Transform3D(-5.1798e-08, 0, -1, 0, 0.97, 0, 1.185, 0, -4.37114e-08, 0, 0, 0.067112)
+mesh = SubResource("ArrayMesh_qvbnf")
+skeleton = NodePath("")
+
+[node name="door" type="AnimatableBody3D" parent="NavigationRegion3D/Room/door5" groups=["unlockable"]]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0)
+script = ExtResource("7_bnu3n")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Room/door5/door"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.51263, 0.949368, -0.0681343)
+shape = SubResource("BoxShape3D_nqkf3")
+
+[node name="door6" type="Node3D" parent="NavigationRegion3D/Room"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.86904, -5.66726, 8.70785)
+
+[node name="doorway(Clone)" type="MeshInstance3D" parent="NavigationRegion3D/Room/door6"]
+transform = Transform3D(-5.1798e-08, 0, -1, 0, 0.97, 0, 1.185, 0, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("ArrayMesh_8vld8")
+skeleton = NodePath("")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="NavigationRegion3D/Room/door6"]
+root_node = NodePath("../door")
+libraries = {
+"": SubResource("AnimationLibrary_q878o")
+}
+
+[node name="door2" type="MeshInstance3D" parent="NavigationRegion3D/Room/door6"]
+transform = Transform3D(-5.1798e-08, 0, -1, 0, 0.97, 0, 1.185, 0, -4.37114e-08, 0, 0, 0.067112)
+mesh = SubResource("ArrayMesh_qvbnf")
+skeleton = NodePath("")
+
+[node name="door" type="AnimatableBody3D" parent="NavigationRegion3D/Room/door6" groups=["unlockable"]]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0)
+script = ExtResource("7_bnu3n")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Room/door6/door"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.51263, 0.949368, -0.0681343)
+shape = SubResource("BoxShape3D_nqkf3")
+
+[node name="door7" type="Node3D" parent="NavigationRegion3D/Room"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.86904, -8.43505, 3.08434)
+
+[node name="doorway(Clone)" type="MeshInstance3D" parent="NavigationRegion3D/Room/door7"]
+transform = Transform3D(-5.1798e-08, 0, -1, 0, 0.97, 0, 1.185, 0, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("ArrayMesh_8vld8")
+skeleton = NodePath("")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="NavigationRegion3D/Room/door7"]
+root_node = NodePath("../door")
+libraries = {
+"": SubResource("AnimationLibrary_q878o")
+}
+
+[node name="door2" type="MeshInstance3D" parent="NavigationRegion3D/Room/door7"]
+transform = Transform3D(-5.1798e-08, 0, -1, 0, 0.97, 0, 1.185, 0, -4.37114e-08, 0, 0, 0.067112)
+mesh = SubResource("ArrayMesh_qvbnf")
+skeleton = NodePath("")
+
+[node name="door" type="AnimatableBody3D" parent="NavigationRegion3D/Room/door7" groups=["unlockable"]]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0)
+script = ExtResource("7_bnu3n")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Room/door7/door"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.51263, 0.949368, -0.0681343)
+shape = SubResource("BoxShape3D_nqkf3")
+
+[node name="door8" type="Node3D" parent="NavigationRegion3D/Room"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.86904, -8.43505, 8.70785)
+
+[node name="doorway(Clone)" type="MeshInstance3D" parent="NavigationRegion3D/Room/door8"]
+transform = Transform3D(-5.1798e-08, 0, -1, 0, 0.97, 0, 1.185, 0, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("ArrayMesh_8vld8")
+skeleton = NodePath("")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="NavigationRegion3D/Room/door8"]
+root_node = NodePath("../door")
+libraries = {
+"": SubResource("AnimationLibrary_q878o")
+}
+
+[node name="door2" type="MeshInstance3D" parent="NavigationRegion3D/Room/door8"]
+transform = Transform3D(-5.1798e-08, 0, -1, 0, 0.97, 0, 1.185, 0, -4.37114e-08, 0, 0, 0.067112)
+mesh = SubResource("ArrayMesh_qvbnf")
+skeleton = NodePath("")
+
+[node name="door" type="AnimatableBody3D" parent="NavigationRegion3D/Room/door8" groups=["unlockable"]]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0)
+script = ExtResource("7_bnu3n")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Room/door8/door"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.51263, 0.949368, -0.0681343)
+shape = SubResource("BoxShape3D_nqkf3")
+
+[node name="door9" type="Node3D" parent="NavigationRegion3D/Room"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.86904, -11.2777, 3.08434)
+
+[node name="doorway(Clone)" type="MeshInstance3D" parent="NavigationRegion3D/Room/door9"]
+transform = Transform3D(-5.1798e-08, 0, -1, 0, 0.97, 0, 1.185, 0, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("ArrayMesh_8vld8")
+skeleton = NodePath("")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="NavigationRegion3D/Room/door9"]
+root_node = NodePath("../door")
+libraries = {
+"": SubResource("AnimationLibrary_q878o")
+}
+
+[node name="door2" type="MeshInstance3D" parent="NavigationRegion3D/Room/door9"]
+transform = Transform3D(-5.1798e-08, 0, -1, 0, 0.97, 0, 1.185, 0, -4.37114e-08, 0, 0, 0.067112)
+mesh = SubResource("ArrayMesh_qvbnf")
+skeleton = NodePath("")
+
+[node name="door" type="AnimatableBody3D" parent="NavigationRegion3D/Room/door9" groups=["unlockable"]]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0)
+script = ExtResource("7_bnu3n")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Room/door9/door"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.51263, 0.949368, -0.0681343)
+shape = SubResource("BoxShape3D_nqkf3")
+
+[node name="door10" type="Node3D" parent="NavigationRegion3D/Room"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.86904, -11.2777, 8.70785)
+
+[node name="doorway(Clone)" type="MeshInstance3D" parent="NavigationRegion3D/Room/door10"]
+transform = Transform3D(-5.1798e-08, 0, -1, 0, 0.97, 0, 1.185, 0, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("ArrayMesh_8vld8")
+skeleton = NodePath("")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="NavigationRegion3D/Room/door10"]
+root_node = NodePath("../door")
+libraries = {
+"": SubResource("AnimationLibrary_q878o")
+}
+
+[node name="door2" type="MeshInstance3D" parent="NavigationRegion3D/Room/door10"]
+transform = Transform3D(-5.1798e-08, 0, -1, 0, 0.97, 0, 1.185, 0, -4.37114e-08, 0, 0, 0.067112)
+mesh = SubResource("ArrayMesh_qvbnf")
+skeleton = NodePath("")
+
+[node name="door" type="AnimatableBody3D" parent="NavigationRegion3D/Room/door10" groups=["unlockable"]]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0)
+script = ExtResource("7_bnu3n")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Room/door10/door"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.51263, 0.949368, -0.0681343)
+shape = SubResource("BoxShape3D_nqkf3")
+
+[node name="door11" type="Node3D" parent="NavigationRegion3D/Room"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.86904, -14.0827, 3.08434)
+
+[node name="doorway(Clone)" type="MeshInstance3D" parent="NavigationRegion3D/Room/door11"]
+transform = Transform3D(-5.1798e-08, 0, -1, 0, 0.97, 0, 1.185, 0, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("ArrayMesh_8vld8")
+skeleton = NodePath("")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="NavigationRegion3D/Room/door11"]
+root_node = NodePath("../door")
+libraries = {
+"": SubResource("AnimationLibrary_q878o")
+}
+
+[node name="door2" type="MeshInstance3D" parent="NavigationRegion3D/Room/door11"]
+transform = Transform3D(-5.1798e-08, 0, -1, 0, 0.97, 0, 1.185, 0, -4.37114e-08, 0, 0, 0.067112)
+mesh = SubResource("ArrayMesh_qvbnf")
+skeleton = NodePath("")
+
+[node name="door" type="AnimatableBody3D" parent="NavigationRegion3D/Room/door11" groups=["unlockable"]]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0)
+script = ExtResource("7_bnu3n")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Room/door11/door"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.51263, 0.949368, -0.0681343)
+shape = SubResource("BoxShape3D_nqkf3")
+
+[node name="door12" type="Node3D" parent="NavigationRegion3D/Room"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.86904, -14.0827, 8.70785)
+
+[node name="doorway(Clone)" type="MeshInstance3D" parent="NavigationRegion3D/Room/door12"]
+transform = Transform3D(-5.1798e-08, 0, -1, 0, 0.97, 0, 1.185, 0, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("ArrayMesh_8vld8")
+skeleton = NodePath("")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="NavigationRegion3D/Room/door12"]
+root_node = NodePath("../door")
+libraries = {
+"": SubResource("AnimationLibrary_q878o")
+}
+
+[node name="door2" type="MeshInstance3D" parent="NavigationRegion3D/Room/door12"]
+transform = Transform3D(-5.1798e-08, 0, -1, 0, 0.97, 0, 1.185, 0, -4.37114e-08, 0, 0, 0.067112)
+mesh = SubResource("ArrayMesh_qvbnf")
+skeleton = NodePath("")
+
+[node name="door" type="AnimatableBody3D" parent="NavigationRegion3D/Room/door12" groups=["unlockable"]]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0)
+script = ExtResource("7_bnu3n")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Room/door12/door"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.51263, 0.949368, -0.0681343)
+shape = SubResource("BoxShape3D_nqkf3")
+
+[node name="door13" type="Node3D" parent="NavigationRegion3D/Room"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.86904, -16.8675, 3.08434)
+
+[node name="doorway(Clone)" type="MeshInstance3D" parent="NavigationRegion3D/Room/door13"]
+transform = Transform3D(-5.1798e-08, 0, -1, 0, 0.97, 0, 1.185, 0, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("ArrayMesh_8vld8")
+skeleton = NodePath("")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="NavigationRegion3D/Room/door13"]
+root_node = NodePath("../door")
+libraries = {
+"": SubResource("AnimationLibrary_q878o")
+}
+
+[node name="door2" type="MeshInstance3D" parent="NavigationRegion3D/Room/door13"]
+transform = Transform3D(-5.1798e-08, 0, -1, 0, 0.97, 0, 1.185, 0, -4.37114e-08, 0, 0, 0.067112)
+mesh = SubResource("ArrayMesh_qvbnf")
+skeleton = NodePath("")
+
+[node name="door" type="AnimatableBody3D" parent="NavigationRegion3D/Room/door13" groups=["unlockable"]]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0)
+script = ExtResource("7_bnu3n")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Room/door13/door"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.51263, 0.949368, -0.0681343)
+shape = SubResource("BoxShape3D_nqkf3")
+
+[node name="door14" type="Node3D" parent="NavigationRegion3D/Room"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.86904, -16.8675, 8.70785)
+
+[node name="doorway(Clone)" type="MeshInstance3D" parent="NavigationRegion3D/Room/door14"]
+transform = Transform3D(-5.1798e-08, 0, -1, 0, 0.97, 0, 1.185, 0, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("ArrayMesh_8vld8")
+skeleton = NodePath("")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="NavigationRegion3D/Room/door14"]
+root_node = NodePath("../door")
+libraries = {
+"": SubResource("AnimationLibrary_q878o")
+}
+
+[node name="door2" type="MeshInstance3D" parent="NavigationRegion3D/Room/door14"]
+transform = Transform3D(-5.1798e-08, 0, -1, 0, 0.97, 0, 1.185, 0, -4.37114e-08, 0, 0, 0.067112)
+mesh = SubResource("ArrayMesh_qvbnf")
+skeleton = NodePath("")
+
+[node name="door" type="AnimatableBody3D" parent="NavigationRegion3D/Room/door14" groups=["unlockable"]]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0)
+script = ExtResource("7_bnu3n")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Room/door14/door"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.51263, 0.949368, -0.0681343)
+shape = SubResource("BoxShape3D_nqkf3")
+
+[node name="door15" type="Node3D" parent="NavigationRegion3D/Room"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.86904, -19.6716, 3.08434)
+
+[node name="doorway(Clone)" type="MeshInstance3D" parent="NavigationRegion3D/Room/door15"]
+transform = Transform3D(-5.1798e-08, 0, -1, 0, 0.97, 0, 1.185, 0, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("ArrayMesh_8vld8")
+skeleton = NodePath("")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="NavigationRegion3D/Room/door15"]
+root_node = NodePath("../door")
+libraries = {
+"": SubResource("AnimationLibrary_q878o")
+}
+
+[node name="door2" type="MeshInstance3D" parent="NavigationRegion3D/Room/door15"]
+transform = Transform3D(-5.1798e-08, 0, -1, 0, 0.97, 0, 1.185, 0, -4.37114e-08, 0, 0, 0.067112)
+mesh = SubResource("ArrayMesh_qvbnf")
+skeleton = NodePath("")
+
+[node name="door" type="AnimatableBody3D" parent="NavigationRegion3D/Room/door15" groups=["unlockable"]]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0)
+script = ExtResource("7_bnu3n")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Room/door15/door"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.51263, 0.949368, -0.0681343)
+shape = SubResource("BoxShape3D_nqkf3")
+
+[node name="door16" type="Node3D" parent="NavigationRegion3D/Room"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.124739, -19.6716, 16.2442)
+
+[node name="doorway(Clone)" type="MeshInstance3D" parent="NavigationRegion3D/Room/door16"]
+transform = Transform3D(-5.1798e-08, 0, -1, 0, 0.97, 0, 1.185, 0, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("ArrayMesh_8vld8")
+skeleton = NodePath("")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="NavigationRegion3D/Room/door16"]
+root_node = NodePath("../door")
+libraries = {
+"": SubResource("AnimationLibrary_q878o")
+}
+
+[node name="door2" type="MeshInstance3D" parent="NavigationRegion3D/Room/door16"]
+transform = Transform3D(-5.1798e-08, 0, -1, 0, 0.97, 0, 1.185, 0, -4.37114e-08, 0, 0, 0.067112)
+mesh = SubResource("ArrayMesh_qvbnf")
+skeleton = NodePath("")
+
+[node name="door" type="AnimatableBody3D" parent="NavigationRegion3D/Room/door16" groups=["unlockable"]]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0)
+script = ExtResource("7_bnu3n")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Room/door16/door"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.51263, 0.949368, -0.0681343)
+shape = SubResource("BoxShape3D_nqkf3")
+
+[node name="Sprite3D" type="Sprite3D" parent="NavigationRegion3D/Room"]
+transform = Transform3D(1.185, 0, 0, 0, 0.97, 0, 0, 0, 1, 0.555643, -18.4799, 18.4426)
+pixel_size = 0.001
+billboard = 2
+texture_filter = 2
+texture = ExtResource("9_ral10")
 
 [node name="game" type="StaticBody3D" parent="NavigationRegion3D/Room" groups=["game"]]
 transform = Transform3D(0.818451, 0, -0.574577, 0, 1, 0, 0.574577, 0, 0.818451, 4.0315, 0.690744, 0.127451)
@@ -1272,12 +1733,18 @@ visible = false
 [node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Room/game"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00110817, 0, -0.0138597)
 shape = SubResource("BoxShape3D_cinxt")
+disabled = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="NavigationRegion3D/Room/game"]
 mesh = SubResource("BoxMesh_2b8km")
 
+[node name="MeshInstance3D" type="MeshInstance3D" parent="NavigationRegion3D/Room/game/MeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0194874, 0)
+mesh = SubResource("PlaneMesh_1tw4v")
+surface_material_override/0 = SubResource("StandardMaterial3D_pcfkb")
+
 [node name="aberrant" type="Sprite3D" parent="NavigationRegion3D/Room"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.27237, 0.529995, -0.786478)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.27237, 0.610857, -0.786478)
 visible = false
 layers = 2
 pixel_size = 0.002
@@ -1314,10 +1781,505 @@ texture = ExtResource("7_l3ogp")
 [node name="HoleFace" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
 transform = Transform3D(0.993961, 0, 0.109734, 0, 1, 0, -0.109734, 0, 0.993961, 5.63558, 0.0813103, 0.189337)
 visible = false
+type = 2
 layers_3d_render = 2
+
+[node name="HoleFace2" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.0460084, 0, 0.998941, 0, 1, 0, -0.998941, 0, 0.0460084, 4.28746, 0.0813103, 6.48866)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace7" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.986173, 0, 0.165719, 0, 1, 0, -0.165719, 0, 0.986173, 0.37632, 0.0813103, 10.2537)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace8" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.992459, 0, -0.12258, 0, 1, 0, 0.12258, 0, 0.992459, 1.0535, 0.0813103, 10.2537)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace3" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.42851, 0, 0.903537, 0, 1, 0, -0.903537, 0, 0.42851, 4.09999, 0.0813103, 7.09931)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace4" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.42851, 0, 0.903537, 0, 1, 0, -0.903537, 0, 0.42851, 4.09999, -2.85148, 7.09931)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace5" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.0720723, 0, 0.997399, 0, 1, 0, -0.997399, 0, 0.0720723, 4.09999, -2.85148, 6.55322)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace6" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.542955, 0, 0.839762, 0, 1, 0, -0.839762, 0, 0.542955, 4.09999, -2.85148, 7.67289)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace9" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.13454, 0, 0.990908, 0, 1, 0, -0.990908, 0, 0.13454, 4.02806, -2.92342, 6.06828)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace13" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.930992, 0, 0.365039, 0, 1, 0, -0.365039, 0, 0.930992, 3.42717, -2.85148, 9.84083)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace14" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.991801, 0, -0.127792, 0, 1, 0, 0.127792, 0, 0.991801, 2.41693, -2.85148, 10.3236)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace15" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.952071, 0, 0.305878, 0, 1, 0, -0.305878, 0, 0.952071, 3.83368, -2.92342, 9.56683)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace16" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.930992, 0, 0.365039, 0, 1, 0, -0.365039, 0, 0.930992, 1.19786, -2.85148, 9.84083)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace17" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.991801, 0, -0.127792, 0, 1, 0, 0.127792, 0, 0.991801, 0.187634, -2.85148, 10.3236)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace18" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.952071, 0, 0.305878, 0, 1, 0, -0.305878, 0, 0.952071, 1.60438, -2.92342, 9.56683)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace10" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.0720723, 0, 0.997399, 0, 1, 0, -0.997399, 0, 0.0720723, 4.09999, -2.85148, 0.816582)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace11" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.244851, 0, 0.969561, 0, 1, 0, -0.969561, 0, 0.244851, 4.09999, -2.85148, 1.22541)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace12" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.13454, 0, 0.990908, 0, 1, 0, -0.990908, 0, 0.13454, 4.02806, -2.92342, 0.33165)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace19" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.42851, 0, 0.903537, 0, 1, 0, -0.903537, 0, 0.42851, 4.09999, -5.69503, 7.09931)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace20" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.0720723, 0, 0.997399, 0, 1, 0, -0.997399, 0, 0.0720723, 4.09999, -5.69503, 6.55322)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace21" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.542955, 0, 0.839762, 0, 1, 0, -0.839762, 0, 0.542955, 4.09999, -5.69503, 7.67289)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace22" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.13454, 0, 0.990908, 0, 1, 0, -0.990908, 0, 0.13454, 4.02806, -5.76698, 6.06828)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace23" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.930992, 0, 0.365039, 0, 1, 0, -0.365039, 0, 0.930992, 3.42717, -5.69503, 9.84083)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace24" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.991801, 0, -0.127792, 0, 1, 0, 0.127792, 0, 0.991801, 2.41693, -5.69503, 10.3236)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace25" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.952071, 0, 0.305878, 0, 1, 0, -0.305878, 0, 0.952071, 3.83368, -5.76698, 9.56683)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace26" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.930992, 0, 0.365039, 0, 1, 0, -0.365039, 0, 0.930992, 1.19786, -5.69503, 9.84083)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace27" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.991801, 0, -0.127792, 0, 1, 0, 0.127792, 0, 0.991801, 0.187645, -5.69503, 10.3236)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace28" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.952071, 0, 0.305878, 0, 1, 0, -0.305878, 0, 0.952071, 1.60438, -5.76698, 9.56683)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace29" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.0720723, 0, 0.997399, 0, 1, 0, -0.997399, 0, 0.0720723, 4.09999, -5.69503, 0.816582)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace30" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.244851, 0, 0.969561, 0, 1, 0, -0.969561, 0, 0.244851, 4.09999, -5.69503, 1.22541)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace31" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.13454, 0, 0.990908, 0, 1, 0, -0.990908, 0, 0.13454, 4.02806, -5.76698, 0.33165)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace32" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.42851, 0, 0.903537, 0, 1, 0, -0.903537, 0, 0.42851, 4.09999, -8.41615, 7.09931)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace33" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.0720723, 0, 0.997399, 0, 1, 0, -0.997399, 0, 0.0720723, 4.09999, -8.41615, 6.55322)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace34" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.542955, 0, 0.839762, 0, 1, 0, -0.839762, 0, 0.542955, 4.09999, -8.41615, 7.67289)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace35" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.13454, 0, 0.990908, 0, 1, 0, -0.990908, 0, 0.13454, 4.02806, -8.4881, 6.06828)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace36" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.930992, 0, 0.365039, 0, 1, 0, -0.365039, 0, 0.930992, 3.42717, -8.41615, 9.84083)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace37" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.991801, 0, -0.127792, 0, 1, 0, 0.127792, 0, 0.991801, 2.41693, -8.41615, 10.3236)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace38" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.952071, 0, 0.305878, 0, 1, 0, -0.305878, 0, 0.952071, 3.83368, -8.4881, 9.56683)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace39" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.930992, 0, 0.365039, 0, 1, 0, -0.365039, 0, 0.930992, 1.19786, -8.41615, 9.84083)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace40" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.991801, 0, -0.127792, 0, 1, 0, 0.127792, 0, 0.991801, 0.187649, -8.41615, 10.3236)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace41" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.952071, 0, 0.305878, 0, 1, 0, -0.305878, 0, 0.952071, 1.60438, -8.4881, 9.56683)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace42" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.0720723, 0, 0.997399, 0, 1, 0, -0.997399, 0, 0.0720723, 4.09999, -8.41615, 0.816582)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace43" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.244851, 0, 0.969561, 0, 1, 0, -0.969561, 0, 0.244851, 4.09999, -8.41615, 1.22541)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace44" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.13454, 0, 0.990908, 0, 1, 0, -0.990908, 0, 0.13454, 4.02806, -8.4881, 0.33165)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace45" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.42851, 0, 0.903537, 0, 1, 0, -0.903537, 0, 0.42851, 4.09999, -11.2188, 7.09931)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace46" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.0720723, 0, 0.997399, 0, 1, 0, -0.997399, 0, 0.0720723, 4.09999, -11.2188, 6.55322)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace47" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.542955, 0, 0.839762, 0, 1, 0, -0.839762, 0, 0.542955, 4.09999, -11.2188, 7.67289)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace48" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.13454, 0, 0.990908, 0, 1, 0, -0.990908, 0, 0.13454, 4.02806, -11.2907, 6.06828)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace49" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.930992, 0, 0.365039, 0, 1, 0, -0.365039, 0, 0.930992, 3.42717, -11.2188, 9.84083)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace50" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.991801, 0, -0.127792, 0, 1, 0, 0.127792, 0, 0.991801, 2.41693, -11.2188, 10.3236)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace51" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.952071, 0, 0.305878, 0, 1, 0, -0.305878, 0, 0.952071, 3.83368, -11.2907, 9.56683)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace52" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.930992, 0, 0.365039, 0, 1, 0, -0.365039, 0, 0.930992, 1.19786, -11.2188, 9.84083)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace53" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.991801, 0, -0.127792, 0, 1, 0, 0.127792, 0, 0.991801, 0.187653, -11.2188, 10.3236)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace54" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.952071, 0, 0.305878, 0, 1, 0, -0.305878, 0, 0.952071, 1.60438, -11.2907, 9.56683)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace55" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.0720723, 0, 0.997399, 0, 1, 0, -0.997399, 0, 0.0720723, 4.09999, -11.2188, 0.816582)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace56" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.244851, 0, 0.969561, 0, 1, 0, -0.969561, 0, 0.244851, 4.09999, -11.2188, 1.22541)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace57" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.13454, 0, 0.990908, 0, 1, 0, -0.990908, 0, 0.13454, 4.02806, -11.2907, 0.33165)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace58" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.42851, 0, 0.903537, 0, 1, 0, -0.903537, 0, 0.42851, 4.09999, -14.0802, 7.09931)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace59" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.0720723, 0, 0.997399, 0, 1, 0, -0.997399, 0, 0.0720723, 4.09999, -14.0802, 6.55322)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace60" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.542955, 0, 0.839762, 0, 1, 0, -0.839762, 0, 0.542955, 4.09999, -14.0802, 7.67289)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace61" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.13454, 0, 0.990908, 0, 1, 0, -0.990908, 0, 0.13454, 4.02806, -14.1521, 6.06828)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace62" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.930992, 0, 0.365039, 0, 1, 0, -0.365039, 0, 0.930992, 3.42717, -14.0802, 9.84083)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace63" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.991801, 0, -0.127792, 0, 1, 0, 0.127792, 0, 0.991801, 2.41693, -14.0802, 10.3236)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace64" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.952071, 0, 0.305878, 0, 1, 0, -0.305878, 0, 0.952071, 3.83368, -14.1521, 9.56683)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace65" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.930992, 0, 0.365039, 0, 1, 0, -0.365039, 0, 0.930992, 1.19786, -14.0802, 9.84083)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace66" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.991801, 0, -0.127792, 0, 1, 0, 0.127792, 0, 0.991801, 0.187656, -14.0802, 10.3236)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace67" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.952071, 0, 0.305878, 0, 1, 0, -0.305878, 0, 0.952071, 1.60438, -14.1521, 9.56683)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace68" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.0720723, 0, 0.997399, 0, 1, 0, -0.997399, 0, 0.0720723, 4.09999, -14.0802, 0.816582)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace69" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.244851, 0, 0.969561, 0, 1, 0, -0.969561, 0, 0.244851, 4.09999, -14.0802, 1.22541)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace70" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.13454, 0, 0.990908, 0, 1, 0, -0.990908, 0, 0.13454, 4.02806, -14.1521, 0.33165)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace71" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.42851, 0, 0.903537, 0, 1, 0, -0.903537, 0, 0.42851, 4.09999, -16.7295, 7.09931)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace72" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.0720723, 0, 0.997399, 0, 1, 0, -0.997399, 0, 0.0720723, 4.09999, -16.7295, 6.55322)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace73" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.542955, 0, 0.839762, 0, 1, 0, -0.839762, 0, 0.542955, 4.09999, -16.7295, 7.67289)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace74" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.13454, 0, 0.990908, 0, 1, 0, -0.990908, 0, 0.13454, 4.02806, -16.8014, 6.06828)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace75" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.930992, 0, 0.365039, 0, 1, 0, -0.365039, 0, 0.930992, 3.42717, -16.7295, 9.84083)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace76" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.991801, 0, -0.127792, 0, 1, 0, 0.127792, 0, 0.991801, 2.41693, -16.7295, 10.3236)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace77" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.952071, 0, 0.305878, 0, 1, 0, -0.305878, 0, 0.952071, 3.83368, -16.8014, 9.56683)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace78" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.930992, 0, 0.365039, 0, 1, 0, -0.365039, 0, 0.930992, 1.19786, -16.7295, 9.84083)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace79" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.991801, 0, -0.127792, 0, 1, 0, 0.127792, 0, 0.991801, 0.18766, -16.7295, 10.3236)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace80" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.952071, 0, 0.305878, 0, 1, 0, -0.305878, 0, 0.952071, 1.60438, -16.8014, 9.56683)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace81" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.0720723, 0, 0.997399, 0, 1, 0, -0.997399, 0, 0.0720723, 4.09999, -16.7295, 0.816582)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace82" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.244851, 0, 0.969561, 0, 1, 0, -0.969561, 0, 0.244851, 4.09999, -16.7295, 1.22541)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace83" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.13454, 0, 0.990908, 0, 1, 0, -0.990908, 0, 0.13454, 4.02806, -16.8014, 0.33165)
+type = 2
+layers_3d_render = 8
+
+[node name="HoleFace84" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(-0.298674, 0, 0.954355, 0, 1, 0, -0.954355, 0, -0.298674, 4.75618, -19.6016, 0.895338)
+type = 3
+layers_3d_render = 8
+
+[node name="HoleFace85" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.13454, 0, 0.990908, 0, 1, 0, -0.990908, 0, 0.13454, 4.75618, -19.6016, 1.79865)
+type = 3
+layers_3d_render = 8
+
+[node name="HoleFace86" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.412453, 0, 0.910979, 0, 1, 0, -0.910979, 0, 0.412453, 4.75618, -19.6016, 0.497194)
+type = 3
+layers_3d_render = 8
+
+[node name="HoleFace87" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(-0.966453, 0, -0.256846, 0, 1, 0, 0.256846, 0, -0.966453, 3.40649, -19.6016, 0.226225)
+type = 3
+layers_3d_render = 8
+
+[node name="HoleFace88" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(-0.984112, 0, 0.177549, 0, 1, 0, -0.177549, 0, -0.984112, 4.30894, -19.6016, 0.265547)
+type = 3
+layers_3d_render = 8
+
+[node name="HoleFace89" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(-0.892161, 0, 0.451719, 0, 1, 0, -0.451719, 0, -0.892161, 3.00872, -19.6016, 0.208893)
+type = 3
+layers_3d_render = 8
+
+[node name="HoleFace90" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(-0.966453, 0, -0.256846, 0, 1, 0, 0.256846, 0, -0.966453, 0.838614, -19.3536, -0.397594)
+type = 3
+layers_3d_render = 8
+
+[node name="HoleFace91" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(-0.984112, 0, 0.177549, 0, 1, 0, -0.177549, 0, -0.984112, 1.74107, -19.3536, -0.358273)
+type = 3
+layers_3d_render = 8
+
+[node name="HoleFace92" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(-0.892161, 0, 0.451719, 0, 1, 0, -0.451719, 0, -0.892161, 0.440847, -19.3536, -0.414927)
+type = 3
+layers_3d_render = 8
+
+[node name="HoleFace93" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.489519, 0, -0.871993, 0, 1, 0, 0.871993, 0, 0.489519, -0.326595, -19.3536, 1.24482)
+type = 3
+layers_3d_render = 8
+
+[node name="HoleFace94" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.0732205, 0, -0.997316, 0, 1, 0, 0.997316, 0, 0.0732205, -0.513342, -19.3536, 0.361019)
+type = 3
+layers_3d_render = 8
+
+[node name="HoleFace95" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(-0.215213, 0, -0.976567, 0, 1, 0, 0.976567, 0, -0.215213, -0.244286, -19.3536, 1.63436)
+type = 3
+layers_3d_render = 8
+
+[node name="HoleFace96" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.489519, 0, -0.871993, 0, 1, 0, 0.871993, 0, 0.489519, -0.326595, -19.3536, 3.55484)
+type = 3
+layers_3d_render = 8
+
+[node name="HoleFace97" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(0.0732205, 0, -0.997316, 0, 1, 0, 0.997316, 0, 0.0732205, -0.513342, -19.3536, 2.67104)
+type = 3
+layers_3d_render = 8
+
+[node name="HoleFace98" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(-0.215213, 0, -0.976567, 0, 1, 0, 0.976567, 0, -0.215213, -0.244286, -19.3536, 3.94438)
+type = 3
+layers_3d_render = 8
+
+[node name="HoleFace99" parent="NavigationRegion3D/Room" instance=ExtResource("13_6afqb")]
+transform = Transform3D(-0.0448745, 0, 0.998993, 0, 1, 0, -0.998993, 0, -0.0448745, 0.496382, -19.6283, 7.42709)
+type = 4
+layers_3d_render = 8
 
 [node name="RoomSpawn" type="Marker3D" parent="NavigationRegion3D/Room"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.707167, 0.00315094, 3.92133)
+
+[node name="AberrantSpawn4" type="Marker3D" parent="NavigationRegion3D/Room"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.40391, 0, 1.191)
+script = ExtResource("4_wd5st")
 
 [node name="Mirror" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0.000698089, 0, 1, 0, -0.000698089, 0, 1, 27.2438, 21.4954, 16.4671)
@@ -1343,15 +2305,42 @@ transform = Transform3D(0.999999, 0.000183215, 0.00115811, -0.000181158, 0.99999
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Mirror/Mirror"]
 shape = SubResource("BoxShape3D_aqinr")
 
-[node name="Eye1" type="MeshInstance3D" parent="."]
+[node name="wall" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -223.784, 9.95707, 94.2696)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="wall"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24.6757, 0, -95.7289)
+shape = SubResource("BoxShape3D_ujnav")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="wall"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 468.324, 0, -95.7289)
+shape = SubResource("BoxShape3D_ujnav")
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="wall"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 221.824, 0, -342.229)
+shape = SubResource("BoxShape3D_ujnav")
+
+[node name="CollisionShape3D4" type="CollisionShape3D" parent="wall"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 221.824, 0, 150.771)
+shape = SubResource("BoxShape3D_ujnav")
+
+[node name="eyes" type="StaticBody3D" parent="." groups=["dialogue"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -223.784, 9.95707, 94.2696)
+
+[node name="Eye1" type="MeshInstance3D" parent="eyes"]
 mesh = SubResource("SphereMesh_8uh8h")
+skeleton = NodePath("../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_xuxdd")
 
-[node name="Eye2" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -223.784, 9.95707, 78.1136)
+[node name="Eye2" type="MeshInstance3D" parent="eyes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -16.156)
 mesh = SubResource("SphereMesh_8uh8h")
+skeleton = NodePath("../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_xuxdd")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="eyes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -7.49923)
+shape = SubResource("BoxShape3D_s6xhr")
 
 [node name="UI" type="CanvasLayer" parent="."]
 
@@ -1708,8 +2697,8 @@ autowrap_mode = 2
 visible = false
 anchors_preset = 10
 anchor_right = 1.0
-offset_top = 49.075
-offset_bottom = 104.075
+offset_top = 96.43
+offset_bottom = 151.43
 grow_horizontal = 2
 theme_override_font_sizes/font_size = 40
 text = "Mission: survive"
@@ -1722,10 +2711,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -0.5
-offset_top = 26.605
-offset_right = 0.5
-offset_bottom = 49.605
+offset_left = -11.5
+offset_top = 35.485
+offset_right = 11.5
+offset_bottom = 90.485
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0, 0.835294, 0.85098, 1)
@@ -1753,6 +2742,22 @@ visible = false
 scale = Vector2(0.01, 0.01)
 texture = ExtResource("18_kxjwx")
 centered = false
+
+[node name="Exit" type="Button" parent="UI"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -4.0
+offset_top = -4.0
+offset_right = 4.0
+offset_bottom = 4.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 30
+text = "Exit game"
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -1855,10 +2860,62 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
+[node name="Sounds" type="Node" parent="."]
+
+[node name="Wind" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("31_5ya15")
+volume_db = -20.0
+
+[node name="Steps" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("32_sswkk")
+volume_db = -15.0
+
+[node name="DoorOpen" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("33_xc73l")
+volume_db = -5.0
+
+[node name="DoorClose" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("33_ru42o")
+volume_db = -5.0
+
+[node name="Laser" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("34_ti2tx")
+volume_db = -10.0
+pitch_scale = 2.0
+
+[node name="Typing" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("36_vxxxn")
+
+[node name="Alarm" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("37_hqlmj")
+
+[node name="Music" type="Node" parent="."]
+
+[node name="AberrantGame" type="AudioStreamPlayer" parent="Music"]
+stream = ExtResource("37_td1vq")
+volume_db = -10.0
+
+[node name="FullyAberrant" type="AudioStreamPlayer" parent="Music"]
+stream = ExtResource("38_nb5jv")
+volume_db = -10.0
+
+[node name="Numbness" type="AudioStreamPlayer" parent="Music"]
+stream = ExtResource("40_6gw21")
+volume_db = -10.0
+
+[node name="FullyNumb" type="AudioStreamPlayer" parent="Music"]
+stream = ExtResource("40_lagna")
+volume_db = -10.0
+
+[node name="Truth" type="AudioStreamPlayer" parent="Music"]
+stream = ExtResource("42_5evee")
+volume_db = -10.0
+
 [connection signal="custom_signal_received" from="UI/DialogueBox/EzDialogue" to="UI/DialogueBox" method="_on_ez_dialogue_custom_signal_received"]
 [connection signal="dialogue_generated" from="UI/DialogueBox/EzDialogue" to="UI/DialogueBox" method="_on_ez_dialogue_dialogue_generated"]
 [connection signal="text_changed" from="UI/LineEdit" to="UI/DialogueBox" method="_on_line_edit_text_changed"]
 [connection signal="button_down" from="UI/left" to="UI/DialogueBox" method="_on_left_button_down"]
 [connection signal="button_down" from="UI/right" to="UI/DialogueBox" method="_on_right_button_down"]
 [connection signal="text_changed" from="UI/LaptopInput" to="UI/DialogueBox" method="_on_laptop_input_text_changed"]
+[connection signal="button_down" from="UI/Exit" to="UI/DialogueBox" method="_on_exit_button_down"]
 [connection signal="button_down" from="CanvasLayer/EndingScreen/Button" to="UI/DialogueBox" method="_on_retry_down"]

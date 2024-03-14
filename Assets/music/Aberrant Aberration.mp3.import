@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://c6hc6o23mnwil"
+path="res://.godot/imported/Aberrant Aberration.mp3-3a7b4c2c3ef5c5fedde049df14aeaca6.mp3str"
+
+[deps]
+
+source_file="res://Assets/music/Aberrant Aberration.mp3"
+dest_files=["res://.godot/imported/Aberrant Aberration.mp3-3a7b4c2c3ef5c5fedde049df14aeaca6.mp3str"]
+
+[params]
+
+loop=true
+loop_offset=0.0
+bpm=0.0
+beat_count=0
+bar_beats=4

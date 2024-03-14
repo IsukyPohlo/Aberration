@@ -29,11 +29,24 @@ var bullet = preload("res://Scenes/bullet.tscn")
 @onready var blasterAnim: AnimationPlayer = $Head/Camera3D/BlasterAnimPlayer
 @onready var blasterBarrel: RayCast3D = $Head/Camera3D/RayCast3D
 @onready var blaster_b: MeshInstance3D = $Head/Camera3D/blasterB
+@onready var retro_shader: ColorRect = $"../UI/RetroShader"
+@onready var exit: Button = $"../UI/Exit"
 
 var MISSING_FURNITURE = preload("res://Assets/MissingFurniture.tres")
 @onready var numb_eyes: ColorRect = $"../CanvasLayer/NumbEyes"
 @onready var aberrant_char_spawn: Marker3D = $"../NavigationRegion3D/Map/AberrantCharSpawn"
 @onready var aberrant_spawn: Marker3D = $"../NavigationRegion3D/Map/AberrantSpawn"
+@onready var aberration_eyes: ColorRect = $"../CanvasLayer/AberrationEyes"
+
+@onready var steps: AudioStreamPlayer = $"../Sounds/Steps"
+@onready var wind: AudioStreamPlayer = $"../Sounds/Wind"
+@onready var laser: AudioStreamPlayer = $"../Sounds/Laser"
+
+@onready var aberrant_game: AudioStreamPlayer = $"../Music/AberrantGame"
+@onready var fully_aberrant: AudioStreamPlayer = $"../Music/FullyAberrant"
+@onready var numbnessMusik: AudioStreamPlayer = $"../Music/Numbness"
+@onready var fully_numb: AudioStreamPlayer = $"../Music/FullyNumb"
+@onready var truth: AudioStreamPlayer = $"../Music/Truth"
 
 var pickedObject: RigidBody3D
 var pullPower: float = 5.0
@@ -44,11 +57,18 @@ var shootSpeed: float = 1
 var killCount: int = 0
 var numbness: float = 0
 var aberration: float = 0
+var openDoor: bool = false
+var windowBoost: bool = false
+var chairBoost: bool = false
 
 func _ready():
+	charModel.type = 0
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	charModel.setUpperAnim("Idle")
 	MISSING_FURNITURE.set_shader_parameter("barrier_force", 1)
+	steps.play()
+	steps.stream_paused = true
+	wind.play()
 
 func _unhandled_input(event):
 	if event is InputEventMouseMotion && Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
@@ -58,6 +78,9 @@ func _unhandled_input(event):
 		camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-60), deg_to_rad(60))
 
 func _process(delta: float) -> void:
+
+	#print(numbness)
+
 	changeInteractIcon()
 	
 	if Input.is_action_just_pressed("ui_cancel"):
@@ -65,8 +88,11 @@ func _process(delta: float) -> void:
 		if dialogueBox.dialogue_finished == true:
 			if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 				Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+				exit.visible = true
 			else:
 				Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+				exit.visible = false
+				
 	if Input.is_action_just_pressed("crouch"):
 		print("crouching")
 		charModel.setState("crouch")
@@ -80,6 +106,7 @@ func _process(delta: float) -> void:
 		
 	if Input.is_action_pressed("shoot"):
 		if !blasterAnim.is_playing() && aberrantGameMode == true:
+			laser.play()
 			blasterAnim.play("shoot")
 			blasterAnim.speed_scale = shootSpeed
 			var instance = bullet.instantiate()
@@ -88,6 +115,7 @@ func _process(delta: float) -> void:
 			get_parent().add_child(instance)
 	
 	if dialogueBox.state["numbness"] >= 90:
+		
 		charModel.type = 2
 		numb_eyes.visible = true
 		var tw = create_tween()
@@ -96,13 +124,25 @@ func _process(delta: float) -> void:
 		if numb == false && dialogueBox.state["numbness"] >= 100:
 			numb = true
 			MISSING_FURNITURE.set_shader_parameter("barrier_force", 0)
+		
+		if !fully_numb.playing:
+			aberrant_game.stop()
+			fully_aberrant.stop()
+			if !numbnessMusik.playing:
+				numbnessMusik.play()
+			fully_numb.stop()
+			truth.stop()
 	
 	else:
-		charModel.type = 1
+		charModel.type = 0
 		var tw = create_tween()
 		tw.tween_property(numb_eyes.get_material(), "shader_parameter/strength", 0, 2)
 		
-	#aberrant stuff here
+		if aberration >= 90:
+			aberration_eyes.visible = true
+			MISSING_FURNITURE.set_shader_parameter("barrier_force", 0)
+			charModel.type = 5
+			
 	if aberrantGameMode == true:
 		if blaster_b.visible == false:
 			blaster_b.visible = true
@@ -117,6 +157,11 @@ func _physics_process(delta):
 	var input_dir = Input.get_vector("left", "right", "up", "down")
 	var direction = (head.transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	
+	if input_dir != Vector2.ZERO:
+		steps.stream_paused = false
+	else: 
+		steps.stream_paused = true
+		
 	# Add the gravity.
 	if not is_on_floor():
 		velocity.y -= gravity * delta
@@ -191,8 +236,29 @@ func pickObject()-> void:
 	if collider is RigidBody3D:
 		if (collider as RigidBody3D).is_in_group("pickable"):
 			pickedObject = collider
+			
+			
 
 	if collider is StaticBody3D:
+		
+		if openDoor:
+			match (collider.name):
+				"eyes":
+					collider.remove_from_group("dialogue")
+					dialogueBox.changeText("")
+					dialogueBox.changeIcon(0)
+					dialogueBox.startDialogue("eyes")
+			return
+		
+		if dialogueBox.state["aberration"] >= 100:
+			match (collider.name):
+				"Mirror":
+					collider.remove_from_group("dialogue")
+					dialogueBox.changeText("")
+					dialogueBox.changeIcon(0)
+					dialogueBox.startDialogue("MirrorAberration")
+			return
+		
 		if (collider as StaticBody3D).is_in_group("work"):
 			dialogueBox.startDialogue("work")
 			
@@ -213,61 +279,147 @@ func pickObject()-> void:
 					dialogueBox.changeText("")
 				"Window1":
 					collider.remove_from_group("dialogue")
-					if dialogueBox.state["numbness"] > 60:
-						dialogueBox.state["numbness"] -= 60
+					if numbness > 60:
+						numbness -= 60
 					else:
-						dialogueBox.state["numbness"] = 0
+						numbness = 0
 				"Window2":
 					collider.remove_from_group("dialogue")
-					if dialogueBox.state["numbness"] > 60:
-						dialogueBox.state["numbness"] -= 60
+					if numbness > 60:
+						numbness -= 60
 					else:
-						dialogueBox.state["numbness"] = 0
+						numbness = 0
 				"Window3":
 					collider.remove_from_group("dialogue")
-					if dialogueBox.state["numbness"] > 60:
-						dialogueBox.state["numbness"] -= 60
+					if numbness > 60:
+						numbness -= 60
 					else:
-						dialogueBox.state["numbness"] = 0
+						numbness = 0
+				"toilet":
+					if numbness > 5:
+						numbness -= 5
+					else:
+						numbness = 0
 
 		if (collider as StaticBody3D).is_in_group("unlockable"):
 			dialogueBox.changeText("")
 			match (collider.name):
 				"Window1":
-					collider.visible = false
-					collider.remove_from_group("unlockable")
-					collider.add_to_group("dialogue")
+					if dialogueBox.state["credits"] >= 100:
+						collider.visible = false
+						collider.remove_from_group("unlockable")
+						collider.add_to_group("dialogue")
+						dialogueBox.state["credits"]-=100
+						wind.volume_db += 1
 				"Window2":
-					collider.visible = false
-					collider.remove_from_group("unlockable")
-					collider.add_to_group("dialogue")
+					if dialogueBox.state["credits"] >= 100:
+						collider.visible = false
+						collider.remove_from_group("unlockable")
+						collider.add_to_group("dialogue")
+						dialogueBox.state["credits"]-=100
+						wind.volume_db += 1
 				"Window3":
-					collider.visible = false
-					collider.remove_from_group("unlockable")
-					collider.add_to_group("dialogue")
+					if dialogueBox.state["credits"] >= 100:
+						collider.visible = false
+						collider.remove_from_group("unlockable")
+						collider.add_to_group("dialogue")
+						dialogueBox.state["credits"]-=100
+						wind.volume_db += 1
 				"Window4":
-					collider.visible = false
-					collider.remove_from_group("unlockable")
-					collider.add_to_group("dialogue")
+					if dialogueBox.state["credits"] >= 100:
+						collider.visible = false
+						collider.remove_from_group("unlockable")
+						collider.add_to_group("dialogue")
+						dialogueBox.state["credits"]-=100
+						windowBoost = true
+						wind.volume_db += 1
+						
 				"Window5":
-					collider.visible = false
-					collider.remove_from_group("unlockable")
-					collider.add_to_group("dialogue")
-				#"toilet":
-					#dialogueBox.changeText("50 Credits to buy a toilet")
+					if dialogueBox.state["credits"] >= 100:
+						collider.visible = false
+						collider.remove_from_group("unlockable")
+						collider.add_to_group("dialogue")
+						dialogueBox.state["credits"]-=100
+						wind.volume_db += 1
+				"toilet":
+					if dialogueBox.state["credits"] >= 50:
+						dialogueBox.state["credits"]-=50
+						collider.find_child("toilet2").visible = true
+						collider.find_child("toilet").visible = false 
+						collider.remove_from_group("unlockable")
+						collider.add_to_group("dialogue")
 				"chair":
-					collider.find_child("chairDesk").visible = true
-					collider.find_child("chairDesk(Clone)").visible = false
-					collider.remove_from_group("unlockable")
+					if dialogueBox.state["credits"] >= 200:
+						collider.find_child("chairDesk").visible = true
+						collider.find_child("chairDesk(Clone)").visible = false
+						collider.remove_from_group("unlockable")
+						dialogueBox.state["credits"]-=200
+						chairBoost = true
 				"door":
-					collider.remove_from_group("unlockable")
-					collider.add_to_group("interact")
-		
+					print(collider.locked, collider.locked == null)
+					if collider.locked == true:
+
+						if dialogueBox.state["credits"] >= 500:
+
+							collider.locked = false
+							var tw = create_tween()
+							tw.tween_property(retro_shader.get_material(), "shader_parameter/target_color_depth", 2, 10.0)
+							camera.cull_mask += 4
+							openDoor = true
+							
+							dialogueBox.state["credits"]-=500
+							
+							aberrant_game.stop()
+							fully_aberrant.stop()
+							numbnessMusik.stop()
+							fully_numb.stop()
+							truth.play()
+							
+							SPRINT_SPEED = 30
+
+							collider.remove_from_group("unlockable")
+							collider.add_to_group("interact")
+						
+					else:
+						collider.remove_from_group("unlockable")
+						collider.add_to_group("interact")
+					
 		if (collider as StaticBody3D).is_in_group("game"):
-			dialogueBox.startDialogue("Game")
-			dialogueBox.state["mission"] += 1
-			dialogueBox.changeIcon(6)
 			
+			#print(dialogueBox.state["mission"])
+			
+			match dialogueBox.state["mission"]:
+				1:
+					if dialogueBox.state["credits"] >= 10:
+						dialogueBox.startDialogue("Game")
+						dialogueBox.state["mission"] += 1
+						dialogueBox.changeIcon(6)
+						dialogueBox.state["credits"]-= 10
+			
+				2:
+					if dialogueBox.state["credits"] >= 50:
+						dialogueBox.startDialogue("Game")
+						dialogueBox.state["mission"] += 1
+						dialogueBox.changeIcon(6)
+						dialogueBox.state["credits"]-= 50
+				3:
+					if dialogueBox.state["credits"] >= 100:
+						dialogueBox.startDialogue("Game")
+						dialogueBox.state["mission"] += 1
+						dialogueBox.changeIcon(6)
+						dialogueBox.state["credits"]-= 100
+				4:
+					if dialogueBox.state["credits"] >= 150:
+						dialogueBox.startDialogue("Game")
+						dialogueBox.state["mission"] += 1
+						dialogueBox.changeIcon(6)
+						dialogueBox.state["credits"]-= 150
+				_:
+					dialogueBox.changeText("Play 'Aberrant'")
+					dialogueBox.state["mission"] += 1
+					dialogueBox.changeIcon(6)
+					dialogueBox.startDialogue("Game")
+		
 			
 	if collider is AnimatableBody3D:
 		if (collider as AnimatableBody3D).is_in_group("interact"):
@@ -284,7 +436,7 @@ func rotateCharSkin(increment: bool) -> int:
 	return charModel.changeSkin(increment)
 	
 func setCharSkin(idx: int) -> void:
-	charModel.setSkin(idx)	
+	charModel.setSkin(idx)
 
 func changeInteractIcon() -> void:
 	var collider = interaction.get_collider()
@@ -306,6 +458,9 @@ func changeInteractIcon() -> void:
 		elif dialogueBox.state["numbness"] >= 100:
 			return
 		
+		elif dialogueBox.state["aberration"] >= 100:
+			return
+		
 		elif (collider as StaticBody3D).is_in_group("unlockable"):
 			dialogueBox.changeIcon(3)
 			match (collider.name):
@@ -324,7 +479,11 @@ func changeInteractIcon() -> void:
 				"chair":
 					dialogueBox.changeText("200 Credits ( halve numbness while working)")
 				"door":
-					dialogueBox.changeText("2000 Credits")
+					#print(collider.name, collider.locked)
+					if collider.locked == true:
+						dialogueBox.changeText("500 Credits")
+					else:
+						dialogueBox.changeText("Open door")
 		
 		elif (collider as StaticBody3D).is_in_group("interact"):
 			dialogueBox.changeIcon(1)
@@ -334,11 +493,13 @@ func changeInteractIcon() -> void:
 			dialogueBox.changeIcon(5)
 			match dialogueBox.state["mission"]:
 				1:
-					dialogueBox.changeText("50 Credits to play 'Aberrant'")
+					dialogueBox.changeText("10 Credits to play 'Aberrant'")
 				2:
-					dialogueBox.changeText("100 Credits to play 'Aberrant'")
+					dialogueBox.changeText("50 Credits to play 'Aberrant'")
 				3:
 					dialogueBox.changeText("100 Credits to play 'Aberrant'")
+				4:
+					dialogueBox.changeText("150 Credits to play 'Aberrant'")
 				_:
 					dialogueBox.changeText("Play 'Aberrant'")
 				

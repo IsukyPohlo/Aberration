@@ -21,6 +21,7 @@ extends VBoxContainer
 
 @onready var game: StaticBody3D = $"../../NavigationRegion3D/Room/game"
 @onready var game2: MeshInstance3D = $"../../NavigationRegion3D/Room/desk/desk(Clone)/drawer/drawer/game2"
+@onready var gameCollision: CollisionShape3D = $"../../NavigationRegion3D/Room/game/CollisionShape3D"
 
 @onready var earnings: Label = $"../Earnings"
 @onready var earningNum: Label = $"../EarningNum"
@@ -37,15 +38,19 @@ extends VBoxContainer
 @onready var aberrant3: Sprite3D = $"../../NavigationRegion3D/Room/aberrant3"
 @onready var aberrant4: Sprite3D = $"../../NavigationRegion3D/Room/aberrant4"
 
-
+@onready var retro_shader: ColorRect = $"../RetroShader"
 @onready var numbnessShader: ColorRect = $"../../CanvasLayer/Numbness"
 @onready var numbShader: ColorRect = $"../../CanvasLayer/Numb"
 @onready var aberration_vision: ColorRect = $"../../CanvasLayer/AberrationVision"
+@onready var aberration_eyes: ColorRect = $"../../CanvasLayer/AberrationEyes"
 
 @onready var room_spawn: Marker3D = $"../../NavigationRegion3D/Room/RoomSpawn"
-@onready var aberrant_char_spawn: Marker3D = $"../../NavigationRegion3D/Map/AberrantCharSpawn"
-
 @onready var aberrant_spawn: Marker3D = $"../../NavigationRegion3D/Map/AberrantSpawn"
+@onready var aberrant_spawn_3: Marker3D = $"../../NavigationRegion3D/Map/AberrantSpawn3"
+@onready var aberrant_char_spawn: Marker3D = $"../../NavigationRegion3D/Map/AberrantCharSpawn"
+@onready var aberrant_char_spawn_3: Marker3D = $"../../NavigationRegion3D/Map/AberrantCharSpawn3"
+@onready var aberrant_spawn_4: Marker3D = $"../../NavigationRegion3D/Room/AberrantSpawn4"
+
 @onready var right_down: Control = $"../RightDown"
 @onready var aberrationBar: ProgressBar = $"../RightDown/ProgressBar"
 @onready var mission: Label = $"../Mission"
@@ -54,15 +59,22 @@ extends VBoxContainer
 
 @onready var endingScreen: Control = $"../../CanvasLayer/EndingScreen"
 @onready var endingLabel: Label = $"../../CanvasLayer/EndingScreen/endingLabel"
+@onready var typing: AudioStreamPlayer = $"../../Sounds/Typing"
 
-var endMission = false
+@onready var aberrant_game: AudioStreamPlayer = $"../../Music/AberrantGame"
+@onready var fully_aberrant: AudioStreamPlayer = $"../../Music/FullyAberrant"
+@onready var numbnessMusik: AudioStreamPlayer = $"../../Music/Numbness"
+@onready var fully_numb: AudioStreamPlayer = $"../../Music/FullyNumb"
+@onready var truth: AudioStreamPlayer = $"../../Music/Truth"
+
+var endMission = true
 var dialogue_finished = false
 var state: Dictionary = {
 	"dialogue": "intro",
 	"name": "",
 	"selectedSkin": 0,
 	"randomNumber": 0,
-	"credits": 0,
+	"credits": 10000,
 	"numbness": 0,
 	"quest": 0,
 	"mission": 0,
@@ -80,9 +92,10 @@ func _ready() -> void:
 	startDialogue("intro")
 	var tw = create_tween()
 	tw.tween_property(numbShader.get_material(), "shader_parameter/spread", 0, 1)
+	typing.play()
+	typing.stream_paused= true
 
 func _process(delta: float) -> void:
-	
 	(numbnessShader.material as ShaderMaterial).set_shader_parameter("alpha", numbness.value/100 - 0.1)
 	#print(numbness.value/100)
 	
@@ -100,6 +113,8 @@ func _process(delta: float) -> void:
 	
 	state["aberration"] = char.aberration
 	aberrationBar.value = state["aberration"]
+	
+	#print(endMission)
 	
 	if !endMission: 
 		checkEndMission()
@@ -194,7 +209,11 @@ func _on_ez_dialogue_custom_signal_received(value: String):
 			earningNum.visible = false
 			earnings.visible = false
 		elif params[1] == "save":
-			state["credits"] += len(laptop_input.text)
+			
+			if char.windowBoost:
+				state["credits"] += len(laptop_input.text) * 2
+			else:
+				state["credits"] += len(laptop_input.text)
 			laptop_input.text = ""
 			earningNum.text = "0"
 			print("save")
@@ -203,12 +222,22 @@ func _on_ez_dialogue_custom_signal_received(value: String):
 		if params[1] == "show":
 			game.visible = true
 			game2.visible = false
+			gameCollision.disabled = false
+			
 		if params[1] == "start":
+			
+			aberrant_game.play()
+			fully_aberrant.stop()
+			numbnessMusik.stop()
+			fully_numb.stop()
+			truth.stop()
+			
 			right_down.visible = true
 			aberration_vision.visible = true
 			mission.visible = true
 			crosshair.visible = true
 			char.aberrantGameMode = true
+			
 			match state["mission"]:
 				0: 
 					char.global_position = aberrant_char_spawn.global_position
@@ -219,31 +248,29 @@ func _on_ez_dialogue_custom_signal_received(value: String):
 					aberrant_spawn.spawn(20,1)
 					mission.text = "Level 1: Kill 20"
 					endMission = false
-					aberrant.visible = true
 				2: 
 					char.global_position = aberrant_char_spawn.global_position
 					aberrant_spawn.spawn(30,2)
 					mission.text = "Level 2: Kill 30"
 					endMission = false
-					hole_face.visible = true
-					aberrant2.visible = true
-					aberrant3.visible = true
 				3: 
-					char.global_position = aberrant_char_spawn.global_position
+					char.global_position = aberrant_char_spawn_3.global_position
 					aberrant_spawn.spawn(40,3)
 					mission.text = "Level 3: Kill 40"
 					endMission = false
-					aberrant.layers = 1
-					aberrant2.layers = 1
-					aberrant3.layers = 1
-					aberrant4.layers = 1
 				4: 
-					char.global_position = room_spawn.global_position
-					aberrant_spawn.spawn(10,4)
-					mission.text = "Level 4: Go to your room"
+					char.global_position = aberrant_spawn_4.global_position
+					aberrant_spawn.spawn(1,4)
+					mission.text = "Kill THE ABERRRANT"
 					endMission = false
 			
 		if params[1] == "end":
+			
+			aberrant_game.stop()
+			fully_aberrant.stop()
+			numbnessMusik.stop()
+			fully_numb.stop()
+			truth.stop()
 			
 			aberration_vision.visible = false
 			mission.visible = false
@@ -256,36 +283,83 @@ func _on_ez_dialogue_custom_signal_received(value: String):
 			mirrorStatic.add_to_group("dialogue")
 			
 	if params[0] == "numbEnding":
+		
 		numbShader.visible = true
 		var tw = create_tween()
 		tw.tween_property(numbShader.get_material(), "shader_parameter/spread", -10, 200.0)
-		
-		
 		endingScreen.visible = true
 		endingLabel.text = "Numb ending"
+		
+		aberrant_game.stop()
+		fully_aberrant.stop()
+		numbnessMusik.stop()
+		if !fully_numb.playing:
+			fully_numb.play()
+		truth.stop()
+		
+		print("Numbending")
+	
+	if params[0] == "aberrationEnding":
+		
+		aberration_vision.visible = false
+ 
+		var tw = create_tween()
+		tw.tween_property(aberration_eyes.get_material(), "shader_parameter/strength", -1000, 240.0)
+		
+		endingScreen.visible = true
+		endingLabel.text = "Aberration ending"
+		
+		aberrant_game.stop()
+		fully_aberrant.play()
+		numbnessMusik.stop()
+		fully_numb.stop()
+		truth.stop()
+	
+	if params[0] == "trueEnding":
+		endingScreen.visible = true
+		endingLabel.text = "True ending"
+		
+		var tw = create_tween()
+		tw.tween_property(retro_shader.get_material(), "shader_parameter/target_color_depth", 1, 1.0)
 	
 func checkEndMission()-> void:
+	
+	if char.numbness >= 100:
+		startDialogue("failedMission")
+		char.global_position = room_spawn.global_position
+		endMission = true
+		
 	match state["mission"]:
 		1: 
 			if char.killCount >= 20:
 				startDialogue("Mission1")
 				char.global_position = room_spawn.global_position
 				endMission = true
+				aberrant.visible = true
+				hole_face.visible = true
 		2: 
 			if char.killCount >= 30:
 				startDialogue("Mission2")
 				char.global_position = room_spawn.global_position
 				endMission = true
+				hole_face.layers_3d_render = 1
+				aberrant2.visible = true
+				aberrant3.visible = true
 		3: 
 			if char.killCount >= 40:
 				startDialogue("Mission3")
 				char.global_position = room_spawn.global_position
 				endMission = true
+				aberrant.layers = 1
+				aberrant2.layers = 1
+				aberrant3.layers = 1
+				aberrant4.layers = 1
 		4: 
-			if char.killCount >= 10:
+			if char.killCount >= 1:
 				startDialogue("Mission4")
-				char.global_position = room_spawn.global_position
 				endMission = true
+				aberration_vision.visible = true
+				print(char.aberration)
 			
 func setQuest(quest: int) -> void:
 	
@@ -314,15 +388,26 @@ func _on_right_button_down() -> void:
 	state["selectedSkin"] = char.rotateCharSkin(true)
 
 func _on_laptop_input_text_changed() -> void:
-	laptop_text.text = laptop_input.text
-	char.numbness +=0.5
-	earningNum.text = str(len(laptop_input.text))
 	
+	typing.stream_paused = false
+	
+	laptop_text.text = laptop_input.text
+	
+	if char.chairBoost:
+		char.numbness +=0.25
+	else:
+		char.numbness +=0.5
+	
+	if char.windowBoost:
+		earningNum.text = str(len(laptop_input.text) * 2)
+	else:
+		earningNum.text = str(len(laptop_input.text))
+		
 	if state["mission"] >= 1:
 		
 		var rng = RandomNumberGenerator.new()
 		rng.randomize()
-		var num = rng.randi_range(0, 50)
+		var num = rng.randi_range(0, 30)
 		if num == 1:
 			aberrant.layers = 1
 			await get_tree().create_timer(0.02).timeout
@@ -331,5 +416,12 @@ func _on_laptop_input_text_changed() -> void:
 		else:
 			aberrant.layers = 2
 			print("no mostro")
+			
+	typing.stream_paused = true
+
 func _on_retry_down() -> void:
 	get_tree().reload_current_scene()
+
+
+func _on_exit_button_down() -> void:
+	get_tree().quit()
